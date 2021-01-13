@@ -19,6 +19,7 @@ public class RedisDistributedLock {
      * 操作成功返回的状态码
      */
     private static final String REDIS_SUCCESS_CODE   = "OK";
+    private static final String END = " end ";
 
     /**
      * 尝试获取分布式锁(原子操作)
@@ -30,15 +31,15 @@ public class RedisDistributedLock {
      */
     public static boolean tryGetLock(RedisTemplate<String, String> redisTemplate, String lockKey,
                                      String lockValue, int expireSeconds) {
-        String status = redisTemplate.execute((RedisCallback<String>) connection -> {
+        String status = redisTemplate.execute((RedisCallback<String>)  connection -> {
             Jedis jedis = (Jedis) connection.getNativeConnection();
             String script = "if redis.call('EXISTS', KEYS[1]) == 0 "
                 + " then return redis.call('set', KEYS[1], ARGV[1], 'nx', 'ex', '"+ expireSeconds +"') "
-                + " end "
+                + END
                 + " if redis.call('get', KEYS[1]) == ARGV[1] "
                 + " then return redis.call('set', KEYS[1], ARGV[1], 'xx', 'ex', '"+ expireSeconds +"') "
                 + " else return 'FAIL' "
-                + " end ";
+                + END;
             Object result = jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(lockValue));
             return (String) result;
         });
@@ -58,14 +59,14 @@ public class RedisDistributedLock {
             Jedis jedis = (Jedis) connection.getNativeConnection();
             String script = "if redis.call('EXISTS', KEYS[1]) == 0"
                 + " then return 'OK'"
-                + " end "
+                + END
                 + " if redis.call('get', KEYS[1]) == ARGV[1] "
                 + " then "
                 + " if redis.call('del', KEYS[1]) == 1 "
                 + " then return 'OK' "
-                + " end "
+                + END
                 + " else return 'FAIL' "
-                + " end ";
+                + END;
             Object result = jedis.eval(script, Collections.singletonList(lockKey),
                 Collections.singletonList(lockValue));
             return (String) result;
