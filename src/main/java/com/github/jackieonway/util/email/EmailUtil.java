@@ -299,7 +299,7 @@ public class EmailUtil {
         }
 
         public void setHtml(boolean html) {
-            html = html;
+            this.html = html;
         }
 
         public List<File> getFiles() {

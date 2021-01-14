@@ -16,6 +16,9 @@ import javax.crypto.spec.SecretKeySpec;
  * @version \$Id: DesUtil.java, v 0.1 2019-03-15 10:33 Jackie Exp $$
  */
 public class DesUtil {
+
+	private static final String DES_CBC_PKCS_5_PADDING = "DES/CBC/PKCS5Padding";
+
 	private DesUtil() {
 
 	}
@@ -74,7 +77,7 @@ public class DesUtil {
 	public static String encryptDESByPKCS5Padding(String encryptString, String encryptKey) throws Exception {
 		IvParameterSpec zeroIv = new IvParameterSpec(eniv);
 		SecretKeySpec key = new SecretKeySpec(encryptKey.getBytes(), "DES");
-		Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+		Cipher cipher = Cipher.getInstance(DES_CBC_PKCS_5_PADDING);
 		cipher.init(1, key, zeroIv);
 		byte[] encryptedData = cipher.doFinal(encryptString.getBytes());
 		return Base64.encode(encryptedData);
@@ -84,7 +87,7 @@ public class DesUtil {
 		byte[] byteMi = Base64.decode(decryptString);
 		IvParameterSpec zeroIv = new IvParameterSpec(deiv);
 		SecretKeySpec key = new SecretKeySpec(decryptKey.getBytes(), "DES");
-		Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+		Cipher cipher = Cipher.getInstance(DES_CBC_PKCS_5_PADDING);
 		cipher.init(2, key, zeroIv);
 		byte[] decryptedData = cipher.doFinal(byteMi);
 		return new String(decryptedData);

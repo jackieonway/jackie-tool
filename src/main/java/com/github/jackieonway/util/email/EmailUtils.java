@@ -25,7 +25,7 @@ public class EmailUtils {
      * @param subject    邮件主题
      * @param content    邮件内容
      */
-    private static void sendSingleSimpleEmail(JavaMailSender jms, String sender, String receiver,
+    public static void sendSingleSimpleEmail(JavaMailSender jms, String sender, String receiver,
                                               String carbonCopy, String subject, String content) {
         //建立邮件消息
         SimpleMailMessage mainMessage = new SimpleMailMessage();
@@ -53,7 +53,7 @@ public class EmailUtils {
      * @param subject      邮件主题
      * @param content      邮件内容
      */
-    private static void sendSimpleEmail(JavaMailSender jms, String sender, String[] receivers,
+    public static void sendSimpleEmail(JavaMailSender jms, String sender, String[] receivers,
                                         String[] carbonCopies, String subject, String content) {
         try {
             //建立邮件消息

@@ -53,18 +53,18 @@ public class NumberUtil {
     }
 
     public static BigDecimal divideBigDecimal(BigDecimal decimal, double divisor) {
-        return divisor == 0.0D ? new BigDecimal(0) : decimal.divide(new BigDecimal(divisor));
+        return divisor == 0.0D ? new BigDecimal(0) : decimal.divide(BigDecimal.valueOf(divisor));
     }
 
     public static BigDecimal multiplyBigDecimal(BigDecimal decimal, double multiply) {
-        return decimal.multiply(new BigDecimal(multiply));
+        return decimal.multiply(BigDecimal.valueOf(multiply));
     }
 
     public static BigDecimal addBigDecimal(BigDecimal decimal, int add) {
-        return decimal.add(new BigDecimal(add));
+        return decimal.add(BigDecimal.valueOf(add));
     }
 
     public static BigDecimal subtractBigDecimal(BigDecimal decimal, int subtract) {
-        return decimal.subtract(new BigDecimal(subtract));
+        return decimal.subtract(BigDecimal.valueOf(subtract));
     }
 }

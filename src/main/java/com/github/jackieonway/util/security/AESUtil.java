@@ -1,5 +1,6 @@
 package com.github.jackieonway.util.security;
 
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.logging.Level;
@@ -31,7 +32,7 @@ public class AESUtil {
         try {
             // Create a cipher
             Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
-            byte[] byteContent = content.getBytes("utf-8");
+            byte[] byteContent = content.getBytes(StandardCharsets.UTF_8);
             // Cipher initialized to encryption mode
             cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(password));
             // encrypt
@@ -64,7 +65,7 @@ public class AESUtil {
             //Perform operation
             byte[] result = cipher.doFinal(Base64.decodeBase64(content));
 
-            return new String(result, "utf-8");
+            return new String(result, StandardCharsets.UTF_8);
         } catch (Exception ex) {
             Logger.getLogger(AESUtil.class.getName()).log(Level.SEVERE, null, ex);
         }

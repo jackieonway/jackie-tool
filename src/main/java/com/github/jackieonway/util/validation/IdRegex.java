@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 
 public class IdRegex {
+    public static final String DOWN_LINE = "-";
     /*********************************** 身份证验证开始 ****************************************/
     /**
      * 身份证号码验证 1、号码的结构 公民身份号码是特征组合码，由十七位数字本体码和一位校验码组成。排列顺序从左至右依次为：六位数字地址码，
@@ -24,41 +25,45 @@ public class IdRegex {
     /**
      * 功能：身份证的有效验证
      *
-     * @param IdStr 身份证号
+     * @param idStr 身份证号
      * @return 有效：返回"" 无效：返回String信息
      */
     @SuppressWarnings("unchecked")
-    public static String IdCardValidate(String IdStr) {
-        String errorInfo = "";// 记录错误信息
-        String[] ValCodeArr = {"1", "0", "X", "9", "8", "7", "6", "5", "4",
+    public static String idCardValidate(String idStr) {
+        // 记录错误信息
+        String errorInfo = "";
+        String[] valCodeArr = {"1", "0", "X", "9", "8", "7", "6", "5", "4",
                 "3", "2"};
-        String[] Wi = {"7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7",
+        String[] wi = {"7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7",
                 "9", "10", "5", "8", "4", "2"};
-        String Ai = "";
+        String ai = "";
         // ================ 号码的长度 15位或18位 ================
-        if (IdStr.length() != 15 && IdStr.length() != 18) {
+        if (idStr.length() != 15 && idStr.length() != 18) {
             errorInfo = "身份证号码长度应该为15位或18位。";
             return errorInfo;
         }
         // =======================(end)========================
 
         // ================ 数字 除最后以为都为数字 ================
-        if (IdStr.length() == 18) {
-            Ai = IdStr.substring(0, 17);
+        if (idStr.length() == 18) {
+            ai = idStr.substring(0, 17);
         } else {
-            Ai = IdStr.substring(0, 6) + "19" + IdStr.substring(6, 15);
+            ai = idStr.substring(0, 6) + "19" + idStr.substring(6, 15);
         }
-        if (!isNumeric(Ai)) {
+        if (!isNumeric(ai)) {
             errorInfo = "身份证15位号码都应为数字 ; 18位号码除最后一位外，都应为数字。";
             return errorInfo;
         }
         // =======================(end)========================
 
         // ================ 出生年月是否有效 ================
-        String strYear = Ai.substring(6, 10);// 年份
-        String strMonth = Ai.substring(10, 12);// 月份
-        String strDay = Ai.substring(12, 14);// 月份
-        if (!isDate(strYear + "-" + strMonth + "-" + strDay)) {
+        // 年份
+        String strYear = ai.substring(6, 10);
+        // 月份
+        String strMonth = ai.substring(10, 12);
+        // 日期
+        String strDay = ai.substring(12, 14);
+        if (!isDate(strYear + DOWN_LINE + strMonth + DOWN_LINE + strDay)) {
             errorInfo = "身份证生日无效。";
             return errorInfo;
         }
@@ -67,7 +72,7 @@ public class IdRegex {
         try {
             if ((gc.get(Calendar.YEAR) - Integer.parseInt(strYear)) > 150
                     || (gc.getTime().getTime() - s.parse(
-                    strYear + "-" + strMonth + "-" + strDay).getTime()) < 0) {
+                    strYear + DOWN_LINE + strMonth + DOWN_LINE + strDay).getTime()) < 0) {
                 errorInfo = "身份证生日不在有效范围。";
                 return errorInfo;
             }
@@ -88,7 +93,7 @@ public class IdRegex {
 
         // ================ 地区码时候有效 ================
         Hashtable h = GetAreaCode();
-        if (h.get(Ai.substring(0, 2)) == null) {
+        if (h.get(ai.substring(0, 2)) == null) {
             errorInfo = "身份证地区编码错误。";
             return errorInfo;
         }
@@ -98,15 +103,15 @@ public class IdRegex {
         int TotalmulAiWi = 0;
         for (int i = 0; i < 17; i++) {
             TotalmulAiWi = TotalmulAiWi
-                    + Integer.parseInt(String.valueOf(Ai.charAt(i)))
-                    * Integer.parseInt(Wi[i]);
+                    + Integer.parseInt(String.valueOf(ai.charAt(i)))
+                    * Integer.parseInt(wi[i]);
         }
         int modValue = TotalmulAiWi % 11;
-        String strVerifyCode = ValCodeArr[modValue];
-        Ai = Ai + strVerifyCode;
+        String strVerifyCode = valCodeArr[modValue];
+        ai = ai + strVerifyCode;
 
-        if (IdStr.length() == 18) {
-            if (!Ai.equals(IdStr)) {
+        if (idStr.length() == 18) {
+            if (!ai.equals(idStr)) {
                 errorInfo = "身份证无效，不是合法的身份证号码";
                 return errorInfo;
             }
@@ -172,11 +177,7 @@ public class IdRegex {
     private static boolean isNumeric(String str) {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(str);
-        if (isNum.matches()) {
-            return true;
-        } else {
-            return false;
-        }
+        return isNum.matches();
     }
 
     /**
@@ -187,12 +188,19 @@ public class IdRegex {
      */
     public static boolean isDate(String strDate) {
         Pattern pattern = Pattern
-                .compile("^((\\d{2}(([02468][048])|([13579][26]))[\\-\\/\\s]?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])))))|(\\d{2}(([02468][1235679])|([13579][01345789]))[\\-\\/\\s]?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))(\\s(((0?[0-9])|([1-2][0-3]))\\:([0-5]?[0-9])((\\s)|(\\:([0-5]?[0-9])))))?$");
+                .compile("^((\\d{2}(([02468][048])|([13579][26]))[\\-\\/\\s]" +
+                        "?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])" +
+                        "|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]" +
+                        "?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]" +
+                        "?((0?[1-9])|([1-2][0-9])))))|(\\d{2}(([02468][1235679])" +
+                        "|([13579][01345789]))[\\-\\/\\s]?((((0?[13578])|(1[02]))" +
+                        "[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))" +
+                        "|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])" +
+                        "|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])" +
+                        "|(1[0-9])|(2[0-8]))))))(\\s(((0?[0-9])" +
+                        "|([1-2][0-3]))\\:([0-5]?[0-9])" +
+                        "((\\s)|(\\:([0-5]?[0-9])))))?$");
         Matcher m = pattern.matcher(strDate);
-        if (m.matches()) {
-            return true;
-        } else {
-            return false;
-        }
+        return m.matches();
     }
 }
