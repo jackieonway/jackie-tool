@@ -21,9 +21,11 @@ import java.util.Map;
 /**
  * @author Jackie
  */
-public class QrCodeUtils {
-    private QrCodeUtils() {
-    }
+public enum QrCodeUtils {
+    /**
+     * QrCodeUtils 实例
+     */
+    INSTANCE;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QrCodeUtils.class);
     private static final int QRCODE_DEFAULT_HEIGHT = 220;

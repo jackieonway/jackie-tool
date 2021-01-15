@@ -2,9 +2,11 @@ package com.github.jackieonway.util;
 
 import java.util.Collection;
 
-public final class ArrayUtils {
-    private ArrayUtils() {
-    }
+public enum  ArrayUtils {
+    /**
+     * ArrayUtils 实例
+     */
+    INSTANCE;
 
     /**
          * 将数组转换成"1,2,3..."的字符串格式

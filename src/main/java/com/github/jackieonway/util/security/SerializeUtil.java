@@ -12,11 +12,14 @@ import java.io.ObjectOutputStream;
 /**
  * @author Jackie
  */
-public class SerializeUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SerializeUtil.class);
+public enum  SerializeUtil {
 
-    private SerializeUtil() {
-    }
+    /**
+     * AESUtil 实例
+     */
+    INSTANCE;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SerializeUtil.class);
 
     public static byte[] serialize(Object object) {
         ObjectOutputStream oos = null;

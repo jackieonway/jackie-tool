@@ -25,12 +25,14 @@ import javax.crypto.Cipher;
  * RSA encryption and decryption tools
  * @author Jackie
  */
-public class RSAUtils {
+public enum  RSAUtils {
+
+	/**
+	 * RSAUtils 实例
+	 */
+	INSTANCE;
 
 	private static final String ENCOUNTERED_AN_EXCEPTION = "] encountered an exception";
-
-	private RSAUtils() {
-	}
 
 	private static final String RSA_ALGORITHM = "RSA";
 

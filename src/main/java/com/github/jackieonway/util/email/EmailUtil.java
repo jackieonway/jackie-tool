@@ -21,10 +21,14 @@ import java.util.Properties;
 /**
  * @author Jackie
  */
-public class EmailUtil {
-    private static final Logger log = LoggerFactory.getLogger(EmailUtil.class);
+public enum  EmailUtil {
 
-    private EmailUtil(){}
+    /**
+     * EmailUtil 实例
+     */
+    INSTANCE;
+
+    private static final Logger log = LoggerFactory.getLogger(EmailUtil.class);
 
     /**
      * 初始化参数

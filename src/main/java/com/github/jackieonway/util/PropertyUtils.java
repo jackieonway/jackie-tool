@@ -6,8 +6,11 @@ package com.github.jackieonway.util;
  *
  * @author Herbert
  */
-public class PropertyUtils {
-
+public enum  PropertyUtils {
+    /**
+     * PropertyUtils 实例
+     */
+    INSTANCE;
     public static String getValue(String name) {
         String value = System.getProperty(name);
         if (org.springframework.util.StringUtils.isEmpty(value)) {

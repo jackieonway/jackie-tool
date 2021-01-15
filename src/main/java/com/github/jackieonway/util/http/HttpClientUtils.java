@@ -39,9 +39,12 @@ import java.util.Objects;
 /**
  * @author Jackie
  */
-public class HttpClientUtils {
+public enum  HttpClientUtils {
 
-    private HttpClientUtils(){}
+    /**
+     * HttpClientUtils 实例
+     */
+    INSTANCE;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
 	private static final PoolingHttpClientConnectionManager CONNECTION_MANAGER = new PoolingHttpClientConnectionManager();

@@ -15,8 +15,11 @@ import org.apache.commons.codec.binary.Base64;
  *  AES encryption tools
  * @version V1.0
  */
-public class AESUtil {
-
+public enum  AESUtil {
+    /**
+     * AESUtil 实例
+     */
+    INSTANCE;
     private static final String KEY_ALGORITHM = "AES";
     //Default encryption algorithm
     private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";

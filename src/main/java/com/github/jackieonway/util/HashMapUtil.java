@@ -8,10 +8,12 @@ package com.github.jackieonway.util;
  * @author Jackie
  * @version $id: HashMapUtil.java v 0.1 2021-01-13 16:47 Jackie Exp $$
  */
-public class HashMapUtil {
+public enum  HashMapUtil {
 
-    private HashMapUtil(){}
-
+    /**
+     * HashMapUtil 实例
+     */
+    INSTANCE;
     /**
      * generate default capacity for hashMap  to reduce it resize's count
      * @param size data size

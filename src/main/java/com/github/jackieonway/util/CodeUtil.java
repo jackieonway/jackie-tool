@@ -8,9 +8,11 @@ import java.util.Random;
 /**
  * @author Jackie
  */
-public class CodeUtil {
-	private CodeUtil() {
-	}
+public enum  CodeUtil {
+	/**
+	 * CodeUtil 实例
+	 */
+	INSTANCE;
 
 	/**
 	 * 获取盐值

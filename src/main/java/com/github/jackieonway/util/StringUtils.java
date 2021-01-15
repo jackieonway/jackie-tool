@@ -15,7 +15,12 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
  * @author yangzhilong
  *
  */
-public class StringUtils {
+public enum  StringUtils {
+
+    /**
+     * StringUtils 实例
+     */
+    INSTANCE;
 
     private static final String A_Z_A_Z_D = "[A-Z]([a-z\\d]+)?";
 

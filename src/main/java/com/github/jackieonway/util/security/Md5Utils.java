@@ -18,13 +18,16 @@ import java.security.NoSuchAlgorithmException;
 /**
  * @author Jackie
  */
-public class Md5Utils {
+public enum  Md5Utils {
+
+    /**
+     * Md5Utils 实例
+     */
+    INSTANCE;
+
     private static final Logger logger = LoggerFactory.getLogger(Md5Utils.class);
 
     private static final char[] DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-
-    private Md5Utils() {
-    }
 
     public static String md5(String text) {
         MessageDigest msgDigest;
@@ -39,7 +42,7 @@ public class Md5Utils {
         return (new String(encodeHex(bytes))).toLowerCase();
     }
 
-    public static char[] encodeHex(byte[] data) {
+    private static char[] encodeHex(byte[] data) {
         int l = data.length;
         char[] out = new char[l << 1];
         int i = 0;

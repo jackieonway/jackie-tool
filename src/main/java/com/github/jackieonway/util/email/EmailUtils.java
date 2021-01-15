@@ -10,9 +10,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 
-public class EmailUtils {
-    private EmailUtils() {
-    }
+public enum EmailUtils {
+    /**
+     * EmailUtils 实例
+     */
+    INSTANCE;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailUtils.class);
 

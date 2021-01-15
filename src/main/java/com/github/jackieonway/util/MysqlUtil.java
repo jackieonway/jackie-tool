@@ -6,9 +6,11 @@ import org.apache.commons.lang3.StringUtils;
  * @author Jackie
  * @version \$Id: MysqlUtil.java, v 0.1 2018-09-05 12:42 Jackie Exp $$
  */
-public class MysqlUtil {
-	private MysqlUtil() {
-	}
+public enum  MysqlUtil {
+	/**
+	 * MysqlUtil 实例
+	 */
+	INSTANCE;
 
 	/**
 	 * 自动转义特殊字符，例如%,_,/等

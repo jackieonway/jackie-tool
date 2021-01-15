@@ -13,9 +13,11 @@ import java.util.List;
  * 自定义响应结构
  * @author Jackie
  */
-public class JsonUtils {
-    private JsonUtils() {
-    }
+public enum  JsonUtils {
+    /**
+     * JsonUtils 实例
+     */
+    INSTANCE;
 
     private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 

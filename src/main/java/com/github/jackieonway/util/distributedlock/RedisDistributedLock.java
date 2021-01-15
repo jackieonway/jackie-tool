@@ -13,7 +13,12 @@ import redis.clients.jedis.Jedis;
  * @author Jackie
  * @version \$Id: RedisDistributedLock.java, v 0.1 2019-02-13 11:09 Jackie Exp $$
  */
-public class RedisDistributedLock {
+public enum  RedisDistributedLock {
+
+    /**
+     * RedisDistributedLock 实例
+     */
+    INSTANCE;
 
     /**
      * 操作成功返回的状态码

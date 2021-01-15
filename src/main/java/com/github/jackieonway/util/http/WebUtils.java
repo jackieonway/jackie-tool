@@ -2,7 +2,11 @@ package com.github.jackieonway.util.http;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class WebUtils {
+public enum  WebUtils {
+        /**
+         * WebUtils 实例
+         */
+        INSTANCE;
 
         /**
          * Get the request IP

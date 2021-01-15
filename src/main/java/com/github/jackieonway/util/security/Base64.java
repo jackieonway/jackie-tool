@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-public class Base64 {
-
+public enum  Base64 {
+    /**
+     * Base64 实例
+     */
+    INSTANCE;
     private static final Logger LOGGER = LoggerFactory.getLogger(Base64.class);
     private static final char[] LEGAL_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
-
-    private Base64() {
-    }
 
     private static final String EMPTY = "";
 

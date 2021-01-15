@@ -18,9 +18,11 @@ import java.util.Map;
  * 生成验证码工具类
  * @author Jackie
  */
-public class VerifyCodeUtils {
-    private VerifyCodeUtils() {
-    }
+public enum  VerifyCodeUtils {
+    /**
+     * VerifyCodeUtils 实例
+     */
+    INSTANCE;
 
     /**
      * 使用到Algerian字体，系统里没有的话需要安装字体，字体只显示大写，去掉了1,0,i,o几个容易混淆的字符

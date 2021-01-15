@@ -3,9 +3,11 @@ package com.github.jackieonway.util;
 
 import java.security.SecureRandom;
 
-public class PasswordUtil {
-    private PasswordUtil() {
-    }
+public enum  PasswordUtil {
+    /**
+     * PasswordUtil 实例
+     */
+    INSTANCE;
 
     private static final String[] WORD = {
             "a", "b", "c", "d", "e", "f", "g",

@@ -13,10 +13,12 @@ import java.util.*;
 /**
  * @author Jackie
  */
-public class DateUtils {
+public enum  DateUtils {
 
-    private DateUtils() {
-    }
+    /**
+     * DateUtils 实例
+     */
+    INSTANCE;
 
     private static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     private static final Logger log = LoggerFactory.getLogger(DateUtils.class);

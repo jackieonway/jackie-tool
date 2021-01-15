@@ -17,9 +17,11 @@ import java.security.SecureRandom;
 /**
  * @author Jackie
  */
-public class ImageText {
-    private ImageText() {
-    }
+public enum  ImageText {
+    /**
+     * ImageText 实例
+     */
+    INSTANCE;
 
     private static final Logger log = LoggerFactory.getLogger(ImageText.class);
 

@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-public class NumberUtil {
-    private NumberUtil() {
-    }
+public enum  NumberUtil {
+    /**
+     * NumberUtil 实例
+     */
+    INSTANCE;
 
     public static String intelligenceFormat(Number number) {
         if (number == null) {

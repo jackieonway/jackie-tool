@@ -12,10 +12,13 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Jackie
  */
-public class Pinyin4jUtils {
+public enum Pinyin4jUtils {
+    /**
+     * Pinyin4jUtils 实例
+     */
+    INSTANCE;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(Pinyin4jUtils.class);
-    private Pinyin4jUtils() {
-    }
 
     public static String converterToFirstSpell(String chineseName) {
         StringBuilder pinyinName = new StringBuilder();

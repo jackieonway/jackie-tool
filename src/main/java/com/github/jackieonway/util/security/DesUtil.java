@@ -15,13 +15,14 @@ import javax.crypto.spec.SecretKeySpec;
  * @author Jackie
  * @version \$Id: DesUtil.java, v 0.1 2019-03-15 10:33 Jackie Exp $$
  */
-public class DesUtil {
+public enum  DesUtil {
+
+	/**
+	 * DesUtil 实例
+	 */
+	INSTANCE;
 
 	private static final String DES_CBC_PKCS_5_PADDING = "DES/CBC/PKCS5Padding";
-
-	private DesUtil() {
-
-	}
 
 	private static byte[] eniv = new byte[]{1, 2, 3, 4, 5, 6, 7, 8};
 	private static byte[] deiv = new byte[]{1, 2, 3, 4, 5, 6, 7, 8};

@@ -12,8 +12,11 @@ import java.util.Map;
  * @author Jackie
  * @version 1.0
  **/
-public class XmlUtils {
-
+public enum XmlUtils {
+    /**
+     * XmlUtils 实例
+     */
+    INSTANCE;
     private static final String UTF_8 = "UTF-8";
 
     /**
