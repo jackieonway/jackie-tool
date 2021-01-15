@@ -7,6 +7,7 @@ import java.math.BigInteger;
  */
 public class IdGenerator {
 
+    private static final int MAX_LENGTH = 9;
     private String businessType;
 
     private String workId;
@@ -26,14 +27,14 @@ public class IdGenerator {
         String str = String.valueOf(seq++);
         int len = str.length();
         //达到8位则重新开始
-        if (len == 9) {
+        if (len == MAX_LENGTH) {
 			seq = 0;
 			len = 1;
 			str = "0";
 			seq++;
 		}
-        int defualtLength = 8;
-        return getSequence(str, len, defualtLength);
+        int defaultLength = 8;
+        return getSequence(str, len, defaultLength);
     }
 
         /**
@@ -54,15 +55,15 @@ public class IdGenerator {
     }
 
     private String getSequence(String str, int len, Integer length) {
-        int defualtLength = 8;
+        int defaultLength = 8;
         if (length != null) {
-            defualtLength = length;
+            defaultLength = length;
         }
-        return getSequence(str, len, defualtLength);
+        return getSequence(str, len, defaultLength);
     }
 
-    private String getSequence(String str, int len, int defualtLength) {
-        int rest = defualtLength - len;
+    private String getSequence(String str, int len, int defaultLength) {
+        int rest = defaultLength - len;
         StringBuilder sb = new StringBuilder();
         sb.append(businessType);
         sb.append(workId);
