@@ -17,6 +17,8 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
  */
 public class StringUtils {
 
+    private static final String A_Z_A_Z_D = "[A-Z]([a-z\\d]+)?";
+
     /**
      * 将对象的大写转换为下划线加小写，例如：userName-- user_name
      * 
@@ -26,7 +28,7 @@ public class StringUtils {
      */
     public static String toUnderlineJSONString(Object object) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
         mapper.setSerializationInclusion(Include.NON_NULL);
         return mapper.writeValueAsString(object);
     }
@@ -41,35 +43,10 @@ public class StringUtils {
      */
     public static <T> T toSnakeObject(String json, Class<T> clazz) throws IOException{
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.PASCAL_CASE_TO_CAMEL_CASE);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE);
         return mapper.readValue(json, clazz);
     }
-    
-    /**
-     * 下划线转驼峰法
-     * @param line 源字符串
-     * @param smallCamel 大小驼峰,是否为小驼峰  true 小驼峰 eg:userName false 大驼峰 eg:UserName 
-     * @return 转换后的字符串
-     */
-    public static String underline2Camel(String line,boolean smallCamel){
-        if(line==null||"".equals(line)){
-            return "";
-        }
-        StringBuilder sb=new StringBuilder();
-        Pattern pattern=Pattern.compile("([A-Za-z\\d]+)(_)?");
-        Matcher matcher=pattern.matcher(line);
-        while(matcher.find()){
-            String word=matcher.group();
-            sb.append(smallCamel&&matcher.start()==0?Character.toLowerCase(word.charAt(0)):Character.toUpperCase(word.charAt(0)));
-            int index=word.lastIndexOf('_');
-            if(index>0){
-                sb.append(word.substring(1, index).toLowerCase());
-            }else{
-                sb.append(word.substring(1).toLowerCase());
-            }
-        }
-        return sb.toString();
-    }
+
     /**
      * 驼峰法转下划线
      * @param line 源字符串
@@ -82,7 +59,7 @@ public class StringUtils {
         }
     	line=String.valueOf(line.charAt(0)).toUpperCase().concat(line.substring(1));
         StringBuilder sb=new StringBuilder();
-        Pattern pattern=Pattern.compile("[A-Z]([a-z\\d]+)?");
+        Pattern pattern=Pattern.compile(A_Z_A_Z_D);
         Matcher matcher=pattern.matcher(line);
         while(matcher.find()){
             String word=matcher.group();
@@ -95,24 +72,4 @@ public class StringUtils {
         }
         return sb.toString();
     }
-    
-    public static void main(String[] args) {
-		String s= "userNameSdsDD";
-		String ss = "<xml>"+
-  "<return_code>SUCCESS</return_code>"+
-  "<return_msg>OK</return_msg>"+
-  "<result_code>SUCCESS</result_code>"+
-  "<mch_id>100010</mch_id>"+
-  "<nonce_str>AuBW53Js00QB9aS7</nonce_str>"+
-  "<sign>1B09E3D0E547665F807CAD8B1D556D4B</sign>"+
-  "<out_trade_no>5812281</out_trade_no>"+
-  "<code_url>weixin://wxpay/bizpayurl?pr=LLN0u7P</code_url>"+
-	  "<prepay_id>wx20161214221028392ab45f510474991331</prepay_id>"+
-	  "<trade_type>NATIVE</trade_type>"+
-	  "</xml>";
-		System.out.println(StringUtils.camel2Underline(s,true));
-		System.out.println(StringUtils.camel2Underline(s,false));
-		System.out.println(StringUtils.underline2Camel(ss,true));
-		System.out.println(StringUtils.underline2Camel(ss,false));
-	}
 }

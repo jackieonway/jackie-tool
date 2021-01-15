@@ -1,11 +1,10 @@
 package com.github.jackieonway.util.bean;
 
+import com.esotericsoftware.reflectasm.ConstructorAccess;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,12 +15,6 @@ import java.util.stream.Collectors;
  * @author Jackie
  */
 public class BeanUtils {
-
-    private static final Logger logger = LoggerFactory.getLogger(BeanUtils.class);
-
-    private static final Map<String, CustomBeanCopier> BEAN_COPIER_CACHE_MAP = new ConcurrentHashMap<>();
-
-    private static final Object LOCK_OBJECT = new Object();
 
     private BeanUtils(){}
 
@@ -38,7 +31,16 @@ public class BeanUtils {
     /**
      * 默认字段实例集合
      */
-    private static final Map<String, MapperFacade> CACHE_MAPPER_FACADE_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, MapperFacade> CACHE_MAPPER_FACADE_MAP =
+            new ConcurrentHashMap<>(256);
+
+    private static final Map<String, CustomBeanCopier> BEAN_COPIER_CACHE_MAP =
+            new ConcurrentHashMap<>(256);
+
+    private static final Object LOCK_OBJECT = new Object();
+
+    private static final Map<String, ConstructorAccess> CONSTRUCTOR_ACCESS_CACHE =
+            new ConcurrentHashMap<>(256);
 
     /**
      * 转换实体（默认字段）
@@ -129,24 +131,19 @@ public class BeanUtils {
      * @return 目标类
      */
     public static <T, E> E copyPropertiesByBeanCopier(T source, Class<E> targetClass) {
-        E target;
-        try {
-            target = targetClass.newInstance();
-        } catch (Exception e) {
-            logger.error("convert bean error", e);
-            throw new IllegalStateException("convert bean error");
-        }
+        ConstructorAccess<E> constructorAccess = getConstructorAccess(targetClass);
+        E target = constructorAccess.newInstance();
         String cacheKey = source.getClass().getCanonicalName() + "_" + targetClass.getCanonicalName();
-        CustomBeanCopier beanCopier;
-        if (!BEAN_COPIER_CACHE_MAP.containsKey(cacheKey)) {
+        CustomBeanCopier beanCopier = BEAN_COPIER_CACHE_MAP.get(cacheKey);
+        if (Objects.isNull(beanCopier)) {
             synchronized (CustomBeanCopier.class) {
-                if (!BEAN_COPIER_CACHE_MAP.containsKey(cacheKey)) {
+                beanCopier = BEAN_COPIER_CACHE_MAP.get(cacheKey);
+                if (Objects.isNull(beanCopier)) {
                     beanCopier = CustomBeanCopier.create(source.getClass(), target.getClass(), false);
                     BEAN_COPIER_CACHE_MAP.put(cacheKey, beanCopier);
                 }
             }
         }
-        beanCopier = BEAN_COPIER_CACHE_MAP.get(cacheKey);
         beanCopier.copy(source, target);
         return target;
     }
@@ -178,22 +175,39 @@ public class BeanUtils {
                                                        Map<String, String> configMap, List<String> excludes) {
         String mapKey = sourceClass.getCanonicalName() + "_" + targetClass.getCanonicalName();
         MapperFacade mapperFacade = CACHE_MAPPER_FACADE_MAP.get(mapKey);
-        if (Objects.isNull(mapperFacade)) {
-            synchronized (LOCK_OBJECT){
-                mapperFacade = CACHE_MAPPER_FACADE_MAP.get(mapKey);
-                if (Objects.isNull(mapperFacade)){
-                    MapperFactory factory = new DefaultMapperFactory.Builder().build();
-                    ClassMapBuilder<T,E> classMapBuilder = factory.classMap(sourceClass, targetClass);
-                    configMap.forEach(classMapBuilder::field);
-                    if (Objects.nonNull(excludes) && !excludes.isEmpty()){
-                        excludes.forEach(classMapBuilder::exclude);
-                    }
-                    classMapBuilder.byDefault().register();
-                    mapperFacade = factory.getMapperFacade();
-                    CACHE_MAPPER_FACADE_MAP.put(mapKey, mapperFacade);
+        if (Objects.nonNull(mapperFacade)) {
+            return mapperFacade;
+        }
+        synchronized (LOCK_OBJECT){
+            mapperFacade = CACHE_MAPPER_FACADE_MAP.get(mapKey);
+            if (Objects.isNull(mapperFacade)){
+                MapperFactory factory = new DefaultMapperFactory.Builder().build();
+                ClassMapBuilder<T,E> classMapBuilder = factory.classMap(sourceClass, targetClass);
+                configMap.forEach(classMapBuilder::field);
+                if (Objects.nonNull(excludes) && !excludes.isEmpty()){
+                    excludes.forEach(classMapBuilder::exclude);
                 }
+                classMapBuilder.byDefault().register();
+                mapperFacade = factory.getMapperFacade();
+                CACHE_MAPPER_FACADE_MAP.put(mapKey, mapperFacade);
             }
         }
         return mapperFacade;
     }
+
+    private static <E> ConstructorAccess<E> getConstructorAccess(Class<E> targetClass) {
+        ConstructorAccess<E> constructorAccess = CONSTRUCTOR_ACCESS_CACHE.get(targetClass.getCanonicalName());
+        if(Objects.nonNull(constructorAccess)) {
+            return constructorAccess;
+        }
+        try {
+            constructorAccess = ConstructorAccess.get(targetClass);
+            CONSTRUCTOR_ACCESS_CACHE.put(targetClass.getCanonicalName(),constructorAccess);
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                    String.format("Create new instance of %s failed: %s", targetClass, e.getMessage()));
+        }
+        return constructorAccess;
+    }
+
 }
