@@ -14,9 +14,12 @@ import java.util.stream.Collectors;
  * Bean转换工具类
  * @author Jackie
  */
-public class BeanUtils {
+public enum BeanUtils {
 
-    private BeanUtils(){}
+    /**
+     * BeanUtils 实例
+     */
+    INSTANCE;
 
     /**
      * 默认字段工厂
@@ -39,7 +42,7 @@ public class BeanUtils {
 
     private static final Object LOCK_OBJECT = new Object();
 
-    private static final Map<String, ConstructorAccess> CONSTRUCTOR_ACCESS_CACHE =
+    private static final Map<String, ConstructorAccess<?>> CONSTRUCTOR_ACCESS_CACHE =
             new ConcurrentHashMap<>(256);
 
     /**
@@ -195,8 +198,9 @@ public class BeanUtils {
         return mapperFacade;
     }
 
+    @SuppressWarnings("unchecked")
     private static <E> ConstructorAccess<E> getConstructorAccess(Class<E> targetClass) {
-        ConstructorAccess<E> constructorAccess = CONSTRUCTOR_ACCESS_CACHE.get(targetClass.getCanonicalName());
+        ConstructorAccess<E> constructorAccess = (ConstructorAccess<E>) CONSTRUCTOR_ACCESS_CACHE.get(targetClass.getCanonicalName());
         if(Objects.nonNull(constructorAccess)) {
             return constructorAccess;
         }
