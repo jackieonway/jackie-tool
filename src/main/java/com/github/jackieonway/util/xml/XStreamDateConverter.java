@@ -1,7 +1,7 @@
 package com.github.jackieonway.util.xml;
 
 import com.thoughtworks.xstream.converters.basic.DateConverter;
-import org.apache.commons.lang3.StringUtils;
+import  com.github.jackieonway.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,7 +1,5 @@
 package com.github.jackieonway.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * @author Jackie
  * @version \$Id: MysqlUtil.java, v 0.1 2018-09-05 12:42 Jackie Exp $$

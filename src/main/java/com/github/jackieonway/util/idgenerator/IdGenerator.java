@@ -1,18 +1,20 @@
 package com.github.jackieonway.util.idgenerator;
 
+import com.github.jackieonway.util.StringUtils;
+
 import java.math.BigInteger;
 
 /**
  * @author Jackie
  */
-public class IdGenerator {
+public final class IdGenerator {
 
     private static final int MAX_LENGTH = 9;
     private String businessType;
 
     private String workId;
 
-	public IdGenerator(String workId, String businessType){
+	private IdGenerator(String workId, String businessType){
 	    this.workId = workId;
 	    this.businessType = businessType;
     }
@@ -74,4 +76,45 @@ public class IdGenerator {
         sb.append(str);
         return new BigInteger(sb.toString()).toString(36);
     }
+
+    public static class IdGeneratorBuilder{
+        private String businessType;
+
+        private String workId;
+
+        public static IdGeneratorBuilder builder(){
+            return new IdGeneratorBuilder();
+        }
+
+        public IdGeneratorBuilder businessType(String businessType) {
+            this.businessType = businessType;
+            return this;
+        }
+
+
+        public IdGeneratorBuilder workId(String workId) {
+            this.workId = workId;
+            return this;
+        }
+
+        public IdGenerator build(){
+            if (StringUtils.isEmpty(this.workId)){
+                throw new IllegalArgumentException(String.format("workId can not be null, value: [%s]",
+                        workId));
+            }
+            if (StringUtils.isEmpty(this.businessType)){
+                throw new IllegalArgumentException(String.format("businessType can not be null, value: [%s]",
+                        businessType));
+            }
+            return new IdGenerator(this.workId,this.businessType);
+        }
+    }
+
+    public static void main(String[] args) {
+        final IdGenerator idGenerator = IdGeneratorBuilder.builder().build();
+        for (int i = 0; i < 1000; i++) {
+            System.out.println(idGenerator.getSequence());
+        }
+    }
+
 }

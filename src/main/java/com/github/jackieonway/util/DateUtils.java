@@ -1,7 +1,6 @@
 package com.github.jackieonway.util;
 
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,8 @@ public enum  DateUtils {
 
     private static final String[] ZODIAC_ARR = {"猴", "鸡", "狗", "猪", "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊"};
 
-    private static final String[] CONSTELLATION_ARR = {"水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "魔羯座"};
+    private static final String[] CONSTELLATION_ARR = {"水瓶座", "双鱼座", "白羊座", "金牛座", "双子座",
+            "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "魔羯座"};
 
     private static final int[] CONSTELLATION_EDAGE_DAY = {20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22};
     /**

@@ -1,6 +1,6 @@
 package com.github.jackieonway.util.http;
 
-import org.apache.commons.lang3.StringUtils;
+import  com.github.jackieonway.util.StringUtils;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;

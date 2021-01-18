@@ -130,7 +130,6 @@ public enum BeanUtils {
      * 转换实体（默认字段）浅复制
      * @param source 数据（对象）
      * @param targetClass 目标类
-     * @date 2021/1/14 9:54
      * @return 目标类
      */
     public static <T, E> E copyPropertiesByBeanCopier(T source, Class<E> targetClass) {

@@ -5,7 +5,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Base64OutputStream;
-import org.apache.commons.lang3.StringUtils;
+import  com.github.jackieonway.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
