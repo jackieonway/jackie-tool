@@ -109,12 +109,4 @@ public final class IdGenerator {
             return new IdGenerator(this.workId,this.businessType);
         }
     }
-
-    public static void main(String[] args) {
-        final IdGenerator idGenerator = IdGeneratorBuilder.builder().build();
-        for (int i = 0; i < 1000; i++) {
-            System.out.println(idGenerator.getSequence());
-        }
-    }
-
 }
