@@ -6,7 +6,7 @@
 
     <groupId>com.github.jackieonway.util</groupId>
     <artifactId>jackie-tool</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>Jackie Tool</name>
     <description>some utils for java , such as bean convert, security, and so on</description>
