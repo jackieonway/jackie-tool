@@ -222,7 +222,8 @@ public enum  VerifyCodeUtils {
         g2.fillRect(0, 0, w, h);
 
         Color c = getRandColor(200, 250);
-        g2.setColor(c);// 设置背景色
+        // 设置背景色
+        g2.setColor(c);
         g2.fillRect(0, 2, w, h - 4);
 
         //绘制干扰线
@@ -323,8 +324,8 @@ public enum  VerifyCodeUtils {
     }
 
     private static void shearY(Graphics g, int w1, int h1, Color color) {
-
-        int period = random.nextInt(40) + 10; // 50;
+        // 50;
+        int period = random.nextInt(40) + 10;
 
         int frames = 20;
         int phase = 7;

@@ -223,24 +223,4 @@ public enum  RSAUtils {
 		IOUtils.closeQuietly(out);
 		return resultDatas;
 	}
-
-	public static void main(String[] args) {
-		Map<String, String> keys = createKeys(2048);
-		String publicKey = keys.get("publicKey");
-		String privateKey = keys.get("privateKey");
-		System.out.println("publicKey: "+ publicKey);
-		System.out.println("privateKey: "+ privateKey);
-		String str = "123456ABCDabcd";
-		System.out.println("-------------");
-		String publicEncrypt = publicEncrypt(str, publicKey);
-		System.out.println(publicEncrypt);
-		String s = privateDecrypt(publicEncrypt, privateKey);
-		System.out.println(s);
-		System.out.println("-------------");
-		String privateEncrypt = privateEncrypt(str, privateKey);
-		System.out.println(privateEncrypt);
-		String ss = publicDecrypt(privateEncrypt, publicKey);
-		System.out.println(ss);
-
-	}
 }

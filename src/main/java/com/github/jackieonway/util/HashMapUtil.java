@@ -5,6 +5,8 @@
 package com.github.jackieonway.util;
 
 /**
+ *
+ * this util provides a method to generate hashmap's capacity
  * @author Jackie
  * @version $id: HashMapUtil.java v 0.1 2021-01-13 16:47 Jackie Exp $$
  */

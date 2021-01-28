@@ -7,7 +7,9 @@ import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 import java.util.Map;
 
 /**
- * Json and Xml analysis and conversion tool class
+ * this xml utils is based on xstream,
+ * so if you are used for convert xml,
+ * the bean class must have xstream annotations
  *
  * @author Jackie
  * @version 1.0
@@ -28,7 +30,8 @@ public enum XmlUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> T parseXml(String xml, Class<T> clazz) {
-        XStream xStream = new XStream(new DomDriver(UTF_8, new XmlFriendlyNameCoder("-_", "_")));
+        XStream xStream = new XStream(
+                new DomDriver(UTF_8, new XmlFriendlyNameCoder("-_", "_")));
         //Declaring the source of X Stream annotations
         xStream.processAnnotations(clazz);
         xStream.registerConverter(new XStreamDateConverter());
@@ -46,7 +49,8 @@ public enum XmlUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> T parseXml(String xml, Class<T> clazz, String format) {
-        XStream xStream = new XStream(new DomDriver(UTF_8, new XmlFriendlyNameCoder("-_", "_")));
+        XStream xStream = new XStream(
+                new DomDriver(UTF_8, new XmlFriendlyNameCoder("-_", "_")));
         //Declaring the source of X Stream annotations
         xStream.processAnnotations(clazz);
         xStream.registerConverter(new XStreamDateConverter(format));
@@ -55,14 +59,15 @@ public enum XmlUtils {
     }
 
     /**
-     * Object to xm
+     * Object to xml string
      *
      * @param obj Object
      * @param map Alias ​​collection key- alias value-the class requiring the alias
      * @return xml string
      */
     public static <T> String toXml(Object obj, Map<String, Class<T>> map) {
-        XStream xStream = new XStream(new DomDriver(UTF_8, new XmlFriendlyNameCoder("-_", "_")));
+        XStream xStream = new XStream(
+                new DomDriver(UTF_8, new XmlFriendlyNameCoder("-_", "_")));
         xStream.processAnnotations(obj.getClass());
         if (map != null && !map.isEmpty()) {
             map.forEach(xStream::alias);
@@ -72,7 +77,7 @@ public enum XmlUtils {
     }
 
     /**
-     * Object to xml
+     * Object to xml string
      *
      * @param obj Object
      * @param map Alias ​​collection key- alias value-the class requiring the alias
@@ -80,7 +85,8 @@ public enum XmlUtils {
      * @return xml string
      */
     public static <T> String toXml(Object obj, Map<String, Class<T>> map, String format) {
-        XStream xStream = new XStream(new DomDriver(UTF_8, new XmlFriendlyNameCoder("-_", "_")));
+        XStream xStream = new XStream(
+                new DomDriver(UTF_8, new XmlFriendlyNameCoder("-_", "_")));
         xStream.processAnnotations(obj.getClass());
         if (map != null && !map.isEmpty()) {
             map.forEach(xStream::alias);

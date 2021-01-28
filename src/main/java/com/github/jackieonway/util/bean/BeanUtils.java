@@ -175,7 +175,12 @@ public enum BeanUtils {
      */
     private static <E, T> MapperFacade getMapperFacade(Class<T> sourceClass, Class<E> targetClass,
                                                        Map<String, String> configMap, List<String> excludes) {
-        String mapKey = sourceClass.getCanonicalName() + "_" + targetClass.getCanonicalName();
+        final String targetName = Objects.nonNull(targetClass.getCanonicalName()) ?
+                targetClass.getCanonicalName() : targetClass.getName();
+        final String sourceName = Objects.nonNull(sourceClass.getCanonicalName()) ?
+                sourceClass.getCanonicalName() :
+                sourceClass.getName();
+        String mapKey = String.format("%s_%s", sourceName, targetName);
         MapperFacade mapperFacade = CACHE_MAPPER_FACADE_MAP.get(mapKey);
         if (Objects.nonNull(mapperFacade)) {
             return mapperFacade;
@@ -199,18 +204,20 @@ public enum BeanUtils {
 
     @SuppressWarnings("unchecked")
     private static <E> ConstructorAccess<E> getConstructorAccess(Class<E> targetClass) {
-        ConstructorAccess<E> constructorAccess = (ConstructorAccess<E>) CONSTRUCTOR_ACCESS_CACHE.get(targetClass.getCanonicalName());
+        final String canonicalName = targetClass.getCanonicalName();
+        ConstructorAccess<E> constructorAccess =
+                (ConstructorAccess<E>) CONSTRUCTOR_ACCESS_CACHE.get(Objects.isNull(canonicalName) ?
+                        targetClass.getName() : canonicalName);
         if(Objects.nonNull(constructorAccess)) {
             return constructorAccess;
         }
         try {
             constructorAccess = ConstructorAccess.get(targetClass);
-            CONSTRUCTOR_ACCESS_CACHE.put(targetClass.getCanonicalName(),constructorAccess);
+            CONSTRUCTOR_ACCESS_CACHE.put(canonicalName,constructorAccess);
         } catch (Exception e) {
             throw new IllegalStateException(
-                    String.format("Create new instance of %s failed: %s", targetClass, e.getMessage()));
+                    String.format("Create new instance of %s failed: %s", targetClass, e.getMessage()),e);
         }
         return constructorAccess;
     }
-
 }

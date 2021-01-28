@@ -15,7 +15,7 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.ChannelSftp.LsEntry;
-import org.springframework.util.CollectionUtils;
+import com.github.jackieonway.util.collection.CollectionUtils;
 
 /**
  * sftp工具类

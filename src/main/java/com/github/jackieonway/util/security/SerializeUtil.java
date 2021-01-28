@@ -31,7 +31,7 @@ public enum  SerializeUtil {
             oos.writeObject(object);
             return baos.toByteArray();
         } catch (Exception var14) {
-            LOGGER.error("serializable error", var14);
+            LOGGER.error("serializable error, {}", var14.getMessage(), var14);
         } finally {
             try {
                 if (oos != null) {
@@ -41,7 +41,7 @@ public enum  SerializeUtil {
                     baos.close();
                 }
             } catch (IOException var13) {
-                LOGGER.error("serializable error", var13);
+                LOGGER.error("serializable error, {}", var13.getMessage(), var13);
             }
 
         }
@@ -49,7 +49,7 @@ public enum  SerializeUtil {
         return new byte[0];
     }
 
-    public static Object unserialize(byte[] bytes) {
+    public static Object deserialize(byte[] bytes) {
         ByteArrayInputStream bais = null;
         ObjectInputStream ois = null;
 

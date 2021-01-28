@@ -3,8 +3,6 @@ package com.github.jackieonway.util.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.Cleaner;
-import sun.nio.ch.DirectBuffer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +12,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 /**
  * @author Jackie
@@ -71,24 +70,17 @@ public enum  Md5Utils {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         } finally {
-            if (null != byteBuffer) {
-                unmap(byteBuffer);
+            if (Objects.nonNull(byteBuffer)) {
+                byteBuffer.clear();
             }
-            if (null != channel) {
+            if (Objects.nonNull(channel)) {
                 channel.close();
             }
-            if (null != in) {
+            if (Objects.nonNull(in)) {
                 in.close();
             }
         }
         return value.toString();
-    }
-
-    private static void unmap(MappedByteBuffer byteBuffer) {
-        Cleaner cleaner = ((DirectBuffer) byteBuffer).cleaner();
-        if (cleaner != null) {
-            cleaner.clean();
-        }
     }
 
     public static String getFileStreamMd5(MultipartFile multipartFile) throws IOException {
@@ -106,13 +98,13 @@ public enum  Md5Utils {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         } finally {
-            if (in != null) {
+            if (Objects.nonNull(in)) {
                 in.close();
             }
-            if (channel != null) {
+            if (Objects.nonNull(channel)) {
                 channel.close();
             }
-            if (byteBuffer != null) {
+            if (Objects.nonNull(byteBuffer)) {
                 byteBuffer.clear();
             }
         }

@@ -13,7 +13,7 @@ public enum  PropertyUtils {
     INSTANCE;
     public static String getValue(String name) {
         String value = System.getProperty(name);
-        if (org.springframework.util.StringUtils.isEmpty(value)) {
+        if (StringUtils.isEmpty(value)) {
             return "";
         } else {
             return value;
@@ -26,10 +26,10 @@ public enum  PropertyUtils {
      */
     public static String getValue1(String name) {
         String value = System.getProperty(name);
-        if (org.springframework.util.StringUtils.isEmpty(value)) {
+        if (StringUtils.isEmpty(value)) {
             return "";
         } else {
-            if (value.endsWith(java.io.File.separatorChar + "")) {
+            if (value.endsWith(String.valueOf(java.io.File.separatorChar))) {
                 value = value.substring(0, value.length() - 1);
             }
             return value;

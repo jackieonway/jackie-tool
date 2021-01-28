@@ -3,7 +3,7 @@ package com.github.jackieonway.util.email;
 import com.sun.mail.util.MailSSLSocketFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.CollectionUtils;
+import com.github.jackieonway.util.collection.CollectionUtils;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -41,7 +41,7 @@ public enum  EmailUtil {
         // 使用smtp身份验证
         properties.put("mail.smtp.auth", "true");
         if (mailConfig.isSsl()){
-            // 使用SSL,企业邮箱必需  开启安全协议
+            // 使用SSL,必需  开启安全协议
             MailSSLSocketFactory mailSslSocketFactory = null;
             try {
                 mailSslSocketFactory = new MailSSLSocketFactory();

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 /**
  * JSON的驼峰和下划线互转帮助类
  * 
- * @author yangzhilong
+ * @author jackie
  *
  */
 public enum  StringUtils {
@@ -24,6 +24,11 @@ public enum  StringUtils {
 
     private static final String A_Z_A_Z_D = "[A-Z]([a-z\\d]+)?";
 
+    /**
+     * the empty string {@code ""}.
+     * @since 1.0.1
+     */
+    public static final String EMPTY = "";
 
     public static boolean isEmpty(CharSequence cs) {
         return cs == null || cs.length() == 0;
@@ -66,6 +71,37 @@ public enum  StringUtils {
             return cs1.equals(cs2);
         }
         return CharSequenceUtils.regionMatches(cs1, false, 0, cs2, 0, cs1.length());
+    }
+
+    /**
+     * <p> this methods is form apache common lang3 </p>
+     *
+     * <p>Checks if CharSequence contains a search CharSequence, handling {@code null}.
+     * This method uses {@link String#indexOf(String)} if possible.</p>
+     *
+     * <p>A {@code null} CharSequence will return {@code false}.</p>
+     *
+     * <pre>
+     * StringUtils.contains(null, *)     = false
+     * StringUtils.contains(*, null)     = false
+     * StringUtils.contains("", "")      = true
+     * StringUtils.contains("abc", "")   = true
+     * StringUtils.contains("abc", "a")  = true
+     * StringUtils.contains("abc", "z")  = false
+     * </pre>
+     *
+     * @param seq  the CharSequence to check, may be null
+     * @param searchSeq  the CharSequence to find, may be null
+     * @return true if the CharSequence contains the search CharSequence,
+     *  false if not or {@code null} string input
+     * @since 2.0
+     * @since 3.0 Changed signature from contains(String, String) to contains(CharSequence, CharSequence)
+     */
+    public static boolean contains(final CharSequence seq, final CharSequence searchSeq) {
+        if (seq == null || searchSeq == null) {
+            return false;
+        }
+        return CharSequenceUtils.indexOf(seq, searchSeq, 0) >= 0;
     }
 
     /**

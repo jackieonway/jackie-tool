@@ -1,5 +1,6 @@
 package com.github.jackieonway.util.security;
 
+import com.github.jackieonway.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,14 +17,12 @@ public enum  Base64 {
     private static final Logger LOGGER = LoggerFactory.getLogger(Base64.class);
     private static final char[] LEGAL_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
 
-    private static final String EMPTY = "";
-
     public static String encode(String data, String charset) {
         try {
             return encode(data.getBytes(charset));
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("base 64 encode error", e);
-            return EMPTY;
+            return StringUtils.EMPTY;
         }
     }
 
@@ -70,7 +69,7 @@ public enum  Base64 {
             return new String(decode(s),charset);
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("base 64 decode error", e);
-            return EMPTY;
+            return StringUtils.EMPTY;
         }
     }
 
