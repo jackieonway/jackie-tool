@@ -1,6 +1,8 @@
 package com.github.jackieonway.util;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.github.jackieonway.util.collection.CollectionUtils;
 
 /**
  * JSON的驼峰和下划线互转帮助类
@@ -156,5 +159,29 @@ public enum  StringUtils {
             sb.append(matcher.end()==line.length()?"":"_");
         }
         return sb.toString();
+    }
+
+    public static String joining(CharSequence delimiter, Collection<CharSequence> strings){
+        return joining(delimiter,"","", strings,"");
+    }
+
+    public static String joining(CharSequence delimiter, Collection<CharSequence> strings, CharSequence empty){
+        return joining(delimiter,"","", strings,empty);
+    }
+
+    public static String joining(CharSequence delimiter, CharSequence prefix, CharSequence suffix,
+                                 Collection<CharSequence> strings){
+        return joining(delimiter,prefix, suffix, strings,"");
+    }
+
+    public static String joining(CharSequence delimiter, CharSequence prefix, CharSequence suffix,
+                                 Collection<CharSequence> strings, CharSequence empty){
+        StringJoiner stringJoiner = new StringJoiner(delimiter, prefix, suffix);
+        if (CollectionUtils.isNotEmpty(strings)){
+            strings.forEach(stringJoiner::add);
+        }else {
+            stringJoiner.setEmptyValue(empty);
+        }
+        return stringJoiner.toString();
     }
 }

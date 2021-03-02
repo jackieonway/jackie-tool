@@ -65,9 +65,9 @@ public final class IdGenerator {
         }
         int rest = length - len;
         StringBuilder sb = new StringBuilder();
+        sb.append(TimeThreadLocal.getTime());
         sb.append(businessType);
         sb.append(workId);
-        sb.append(TimeThreadLocal.getTime());
         for (int i = 0; i < rest; i++) {
             sb.append('0');
         }
@@ -111,7 +111,7 @@ public final class IdGenerator {
                 throw new IllegalArgumentException(String.format("businessType can not be null, value: [%s]",
                         businessType));
             }
-            if (this.radix < 1 || this.radix > 36){
+            if (this.radix < 2 || this.radix > 36){
                 this.radix = 36;
             }
             return new IdGenerator(this.workId,this.businessType,this.radix);
