@@ -10,13 +10,17 @@ import java.math.BigInteger;
 public final class IdGenerator {
 
     private static final int MAX_LENGTH = 9;
+    private static final int DEFAULT_LENGTH = 8;
     private String businessType;
 
     private String workId;
 
-	private IdGenerator(String workId, String businessType){
+    private int radix;
+
+	private IdGenerator(String workId, String businessType, int radix){
 	    this.workId = workId;
 	    this.businessType = businessType;
+	    this.radix= radix;
     }
 
     private long seq = 0;
@@ -35,15 +39,14 @@ public final class IdGenerator {
 			str = "0";
 			seq++;
 		}
-        int defaultLength = 8;
-        return getSequence(str, len, defaultLength);
+        return getSequence(str, len, DEFAULT_LENGTH);
     }
 
         /**
      * 得到指定位数的序列号,长度不足指定位,前面补0
      * @return idSequence
      */
-    public synchronized String getSequenceByLength(Integer length) {
+    public synchronized String getSequenceByLength(int length) {
         String str = String.valueOf(seq++);
         int len = str.length();
         //达到length+1位则重新开始
@@ -56,31 +59,28 @@ public final class IdGenerator {
         return getSequence(str, len, length);
     }
 
-    private String getSequence(String str, int len, Integer length) {
-        int defaultLength = 8;
-        if (length != null) {
-            defaultLength = length;
+    private String getSequence(String str, int len, int length) {
+        if (length < 1) {
+            length = DEFAULT_LENGTH;
         }
-        return getSequence(str, len, defaultLength);
-    }
-
-    private String getSequence(String str, int len, int defaultLength) {
-        int rest = defaultLength - len;
+        int rest = length - len;
         StringBuilder sb = new StringBuilder();
+        sb.append(TimeThreadLocal.getTime());
         sb.append(businessType);
         sb.append(workId);
-        sb.append(TimeThreadLocal.getTime());
         for (int i = 0; i < rest; i++) {
             sb.append('0');
         }
         sb.append(str);
-        return new BigInteger(sb.toString()).toString(36);
+        return new BigInteger(sb.toString()).toString(this.radix);
     }
 
     public static class IdGeneratorBuilder{
         private String businessType;
 
         private String workId;
+
+        private int radix;
 
         public static IdGeneratorBuilder builder(){
             return new IdGeneratorBuilder();
@@ -97,6 +97,11 @@ public final class IdGenerator {
             return this;
         }
 
+        public IdGeneratorBuilder radix(int radix) {
+            this.radix = radix;
+            return this;
+        }
+
         public IdGenerator build(){
             if (StringUtils.isEmpty(this.workId)){
                 throw new IllegalArgumentException(String.format("workId can not be null, value: [%s]",
@@ -106,7 +111,10 @@ public final class IdGenerator {
                 throw new IllegalArgumentException(String.format("businessType can not be null, value: [%s]",
                         businessType));
             }
-            return new IdGenerator(this.workId,this.businessType);
+            if (this.radix < 2 || this.radix > 36){
+                this.radix = 36;
+            }
+            return new IdGenerator(this.workId,this.businessType,this.radix);
         }
     }
 }
