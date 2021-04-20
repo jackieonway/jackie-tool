@@ -25,9 +25,6 @@ public enum  HashMapUtil {
         if (size < 0){
             throw new IllegalArgumentException("size can not less than 0");
         }
-        if(size >= Integer.MAX_VALUE){
-            return Integer.MIN_VALUE;
-        }
         int i = (int) ((float) size / 0.75F + 1.0F);
         i |= i >>> 1;
         i |= i >>> 2;
