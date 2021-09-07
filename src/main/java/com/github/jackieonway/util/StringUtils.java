@@ -184,4 +184,20 @@ public enum  StringUtils {
         }
         return stringJoiner.toString();
     }
+
+    public static String merge(CharSequence delimiter, String source, String merge){
+        return merge(delimiter,"","",source, merge);
+    }
+
+    public static String merge(CharSequence delimiter, CharSequence prefix, CharSequence suffix,
+                               String source, String merge){
+        StringJoiner stringJoiner = new StringJoiner(delimiter, prefix, suffix);
+        CharSequence sourceStr = source.replace(prefix, EMPTY).replace(suffix, EMPTY);
+        stringJoiner.add(sourceStr);
+        StringJoiner mergeStringJoiner = new StringJoiner(delimiter, prefix, suffix);
+        CharSequence mergeStr = merge.replace(prefix, EMPTY).replace(suffix, EMPTY);
+        mergeStringJoiner.add(mergeStr);
+        stringJoiner.merge(mergeStringJoiner);
+        return stringJoiner.toString();
+    }
 }

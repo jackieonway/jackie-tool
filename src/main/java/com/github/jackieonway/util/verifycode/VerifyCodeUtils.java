@@ -135,17 +135,13 @@ public enum  VerifyCodeUtils {
     /**
      * 输出指定验证码图片流
      */
-    public static void generateVerifyCode(String sessionCodeId, String code, String result,
-                                           HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public static void generateVerifyCode(String code, HttpServletResponse response) throws IOException {
         int w = 280;
         int h = 60;
         int verifySize = code.length();
         BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = image.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Color[] colorSpaces = new Color[]{Color.WHITE, Color.CYAN,
-                Color.GRAY, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE,
-                Color.PINK, Color.YELLOW};
         // 设置边框色
         g2.setColor(Color.GRAY);
         g2.fillRect(0, 0, w, h);
@@ -200,8 +196,6 @@ public enum  VerifyCodeUtils {
         response.addHeader("Cache-Control", "post-check=0, pre-check=0");
         response.setHeader("Pragma", "no-cache");
         response.setContentType("image/jpeg");
-        request.getSession().setAttribute(
-                sessionCodeId, result);
         ImageIO.write(image, "jpg", response.getOutputStream());
     }
 

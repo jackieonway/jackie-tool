@@ -1,6 +1,7 @@
 package com.github.jackieonway.util.bean;
 
 import com.esotericsoftware.reflectasm.ConstructorAccess;
+import com.github.jackieonway.util.collection.CollectionUtils;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -20,16 +21,6 @@ public enum BeanUtils {
      * BeanUtils 实例
      */
     INSTANCE;
-
-    /**
-     * 默认字段工厂
-     */
-    private static final MapperFactory MAPPER_FACTORY = new DefaultMapperFactory.Builder().build();
-
-    /**
-     * 默认字段实例
-     */
-    private static final MapperFacade MAPPER_FACADE = MAPPER_FACTORY.getMapperFacade();
 
     /**
      * 默认字段实例集合
@@ -53,7 +44,7 @@ public enum BeanUtils {
      * @return 目标类对象
      */
     public static  <E, T> E copyProperties(T source, Class<E> targetClass) {
-        return MAPPER_FACADE.map(source, targetClass);
+        return copyProperties(source, targetClass,null);
     }
 
     /**
@@ -65,8 +56,7 @@ public enum BeanUtils {
      * @return 目标类对象
      */
     public static <E, T> E copyProperties(T source, Class<E> targetClass, Map<String, String> configMap) {
-        MapperFacade mapperFacade = getMapperFacade(source.getClass(), targetClass, configMap,null);
-        return mapperFacade.map(source, targetClass);
+        return copyProperties(source, targetClass,configMap,null);
     }
 
     /**
@@ -91,8 +81,8 @@ public enum BeanUtils {
      * @param targetClass 目标类
      * @return 目标类对象集合
      */
-    public static <E, T> List<E> copyProperties(Collection<T> source, Class<E> targetClass) {
-        return MAPPER_FACADE.mapAsList(source, targetClass);
+    public static <E, T> List<E> copyProperties(List<T> source, Class<E> targetClass) {
+        return copyProperties(source, targetClass,null);
     }
 
     /**
@@ -103,11 +93,9 @@ public enum BeanUtils {
      * @param configMap 自定义配置
      * @return 目标类对象集合
      */
-    public static <E, T> List<E> copyProperties(Collection<T> source, Class<E> targetClass,
+    public static <E, T> List<E> copyProperties(List<T> source, Class<E> targetClass,
                                              Map<String, String> configMap) {
-        T t = source.stream().findFirst().orElseThrow(() -> new NullPointerException("映射集合，数据集合为空"));
-        MapperFacade mapperFacade = getMapperFacade(t.getClass(), targetClass, configMap, null);
-        return mapperFacade.mapAsList(source, targetClass);
+        return copyProperties(source, targetClass, configMap,null);
     }
 
     /**
@@ -119,12 +107,41 @@ public enum BeanUtils {
      * @param excludeFields excluded field
      * @return 目标类对象集合
      */
-    public static <E, T> List<E> copyProperties(Collection<T> source, Class<E> targetClass,
+    public static <E, T> List<E> copyProperties(List<T> source, Class<E> targetClass,
                                                 Map<String, String> configMap, List<String> excludeFields) {
         T t = source.stream().findFirst().orElseThrow(() -> new NullPointerException("映射集合，数据集合为空"));
         MapperFacade mapperFacade = getMapperFacade(t.getClass(), targetClass, configMap, excludeFields);
         return mapperFacade.mapAsList(source, targetClass);
     }
+
+    public static <E, T> Collection<E> copyProperties(Collection<T> source, Collection<E> destination,
+                                                      Class<E> targetClass) {
+        return copyProperties(source, destination, targetClass, null);
+    }
+
+    public static <E, T> Collection<E> copyProperties(Collection<T> source, Collection<E> destination,
+                                                      Class<E> targetClass,Map<String, String> configMap) {
+        return copyProperties(source, destination, targetClass, configMap, null);
+    }
+
+    /**
+     * 转换集合（自定义配置）
+     *
+     * @param source    数据（集合）
+     * @param destination 目标集合
+     * @param targetClass 目标类
+     * @param configMap 自定义配置
+     * @param excludeFields excluded field
+     * @return 目标类对象集合
+     */
+    public static <E, T> Collection<E> copyProperties(Collection<T> source, Collection<E> destination,
+                                     Class<E> targetClass,Map<String, String> configMap, List<String> excludeFields) {
+        T t = source.stream().findFirst().orElseThrow(() -> new NullPointerException("映射集合，数据集合为空"));
+        MapperFacade mapperFacade = getMapperFacade(t.getClass(), targetClass, configMap, excludeFields);
+        mapperFacade.mapAsCollection(source,destination , targetClass);
+        return destination;
+    }
+
 
     /**
      * 转换实体（默认字段）浅复制
@@ -157,13 +174,12 @@ public enum BeanUtils {
      * @param targetClass 目标类
      * @return 目标类对象集合
      */
-    public static <E, T> List<E> copyPropertiesByBeanCopier(Collection<T> source, Class<E> targetClass) {
+    public static <E, T> List<E> copyPropertiesByBeanCopier(List<T> source, Class<E> targetClass) {
         if (source == null|| source.isEmpty()){
             return Collections.emptyList();
         }
         return source.stream().map(e->copyPropertiesByBeanCopier(e, targetClass)).collect(Collectors.toList());
     }
-
 
     /**
      * 获取自定义映射
@@ -190,8 +206,10 @@ public enum BeanUtils {
             if (Objects.isNull(mapperFacade)){
                 MapperFactory factory = new DefaultMapperFactory.Builder().build();
                 ClassMapBuilder<T,E> classMapBuilder = factory.classMap(sourceClass, targetClass);
-                configMap.forEach(classMapBuilder::field);
-                if (Objects.nonNull(excludes) && !excludes.isEmpty()){
+                if (CollectionUtils.isNotEmpty(configMap)){
+                    configMap.forEach(classMapBuilder::field);
+                }
+                if (CollectionUtils.isNotEmpty(excludes)){
                     excludes.forEach(classMapBuilder::exclude);
                 }
                 classMapBuilder.byDefault().register();
