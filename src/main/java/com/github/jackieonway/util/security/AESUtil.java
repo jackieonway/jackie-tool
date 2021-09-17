@@ -9,7 +9,6 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import org.apache.commons.codec.binary.Base64;
 
 /**
  *  AES encryption tools
@@ -41,7 +40,7 @@ public enum  AESUtil {
             // encrypt
             byte[] result = cipher.doFinal(byteContent);
             //Return via Base 64 transcoding
-            return Base64.encodeBase64String(result);
+            return Base64.encode(result);
         } catch (Exception ex) {
             Logger.getLogger(AESUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,7 +65,7 @@ public enum  AESUtil {
             cipher.init(Cipher.DECRYPT_MODE, getSecretKey(password));
 
             //Perform operation
-            byte[] result = cipher.doFinal(Base64.decodeBase64(content));
+            byte[] result = cipher.doFinal(Base64.decode(content));
 
             return new String(result, StandardCharsets.UTF_8);
         } catch (Exception ex) {
