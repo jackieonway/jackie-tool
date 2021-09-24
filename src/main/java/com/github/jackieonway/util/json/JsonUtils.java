@@ -28,8 +28,8 @@ public enum  JsonUtils {
      * 将对象转换成json字符串。
      * <p>Title: pojoToJson</p>
      * <p>Description: </p>
-     * @param data
-     * @return
+     * @param data  data
+     * @return object string
      */
     public static String objectToJson(Object data) {
     	try {
@@ -45,7 +45,8 @@ public enum  JsonUtils {
      * 
      * @param data json数据
      * @param beanType 对象中的object类型
-     * @return
+     * @param <T> target class
+     * @return object
      */
     public static <T> T jsonToPojo(String data, Class<T> beanType) {
         try {
@@ -60,9 +61,10 @@ public enum  JsonUtils {
      * 将json数据转换成pojo对象list
      * <p>Title: jsonToList</p>
      * <p>Description: </p>
-     * @param jsonData
-     * @param beanType
-     * @return
+     * @param jsonData jsonData
+     * @param beanType beanType
+     * @param <T> target class
+     * @return objects
      */
     public static <T>List<T> jsonToList(String jsonData, Class<T> beanType) {
     	JavaType javaType = MAPPER.getTypeFactory().constructParametricType(List.class, beanType);

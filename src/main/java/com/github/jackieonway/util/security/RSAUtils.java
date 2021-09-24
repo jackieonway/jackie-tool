@@ -65,6 +65,9 @@ public enum  RSAUtils {
 	/**
 	 * Get public key
 	 * @param publicKey Key string（Encoded by base 64）
+	 * @return    RSAPublicKey
+	 * @throws NoSuchAlgorithmException NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException InvalidKeySpecException
 	 */
 	public static RSAPublicKey getPublicKey(String publicKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		// Obtain the public key object through the X509 encoded Key instruction
@@ -76,6 +79,7 @@ public enum  RSAUtils {
 	/**
 	 * Get private key
 	 * @param privateKey Key string（Encoded by base 64）
+	 * @return    RSAPrivateKey
 	 */
 	public static RSAPrivateKey getPrivateKey(String privateKey)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {

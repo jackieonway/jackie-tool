@@ -11,8 +11,8 @@ public enum  WebUtils {
         /**
          * Get the request IP
          *
-         * @param request
-         * @return
+         * @param request request
+         * @return IP
          */
         public static String getIpAddr(HttpServletRequest request) {
             String ip = "0.0.0.0";
@@ -26,7 +26,8 @@ public enum  WebUtils {
             if (isInvalidIP(ip)) {
                 ip = request.getRemoteAddr();
             }
-            if (isInvalidIP(ip)) { // get X-real-ip from nginx
+            // get X-real-ip from nginx
+            if (isInvalidIP(ip)) {
                 ip = request.getHeader("X-real-ip");
             }
             if (isInvalidIP(ip) && null != request.getAttribute("X-real-ip")) {
@@ -45,8 +46,8 @@ public enum  WebUtils {
         /**
          * Get the base path
          *
-         * @param request
-         * @return
+         * @param request request
+         * @return base path
          */
         public static String getBasePath(HttpServletRequest request) {
             String path = request.getContextPath();
@@ -58,8 +59,8 @@ public enum  WebUtils {
         /**
          * Get the base path haven't port
          *
-         * @param request
-         * @return
+         * @param request request
+         * @return base path haven't port
          */
         public static String getBasePathNotPort(HttpServletRequest request) {
             String path = request.getContextPath();
@@ -70,8 +71,8 @@ public enum  WebUtils {
         /**
          * Get the url
          *
-         * @param request
-         * @return
+         * @param request request
+         * @return url
          */
         public static String getUrl(HttpServletRequest request) {
             return request.getRequestURL().toString();
@@ -80,8 +81,8 @@ public enum  WebUtils {
         /**
          * Get the context path
          *
-         * @param request
-         * @return
+         * @param request request
+         * @return context path
          */
         public static String getContextPath(HttpServletRequest request) {
             return request.getContextPath();

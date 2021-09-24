@@ -12,8 +12,8 @@ public enum  MysqlUtil {
 
 	/**
 	 * 自动转义特殊字符，例如%,_,/等
-	 * @param keyword
-	 * @return
+	 * @param keyword keywords
+	 * @return strings
 	 */
 	public static String escapeSpecialChar(String keyword){
 		if (StringUtils.isNotBlank(keyword)) {

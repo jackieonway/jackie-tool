@@ -171,8 +171,8 @@ public class IdRegex {
     /**
      * 功能：判断字符串是否为数字
      *
-     * @param str
-     * @return
+     * @param str str
+     * @return result
      */
     private static boolean isNumeric(String str) {
         Pattern pattern = Pattern.compile("[0-9]*");
@@ -183,8 +183,8 @@ public class IdRegex {
     /**
      * 功能：判断字符串是否为日期格式
      *
-     * @param strDate
-     * @return
+     * @param strDate date
+     * @return result
      */
     public static boolean isDate(String strDate) {
         Pattern pattern = Pattern

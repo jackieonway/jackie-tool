@@ -41,7 +41,7 @@ public enum  DesUtil {
 	/**
 	 * Encrypted data
 	 * @param data Encrypted data
-	 * @return
+	 * @return String
 	 */
 	public static String encrypt(String data) throws Exception {
 		byte[] bt = encryptByKey(data.getBytes(), password);
@@ -56,8 +56,8 @@ public enum  DesUtil {
 	/**
 	 * Decrypt data,Convert BASE 64 Encoder to string
 	 * @param data Decrypt data
-	 * @return
-	 * @throws Exception
+	 * @return String
+	 * @throws Exception Exception
 	 */
 	public static String decryptor(String data) throws Exception {
 		byte[] bt = decrypt(Base64.decode(data), password);
@@ -67,8 +67,8 @@ public enum  DesUtil {
 	/**
 	 * Decrypt data,Convert BASE 64 Encoder to string
 	 * @param data Decrypt data
-	 * @param password
-	 * @return
+	 * @param password password
+	 * @return String
 	 */
 	public static String decryptor(String data, String password) throws Exception {
 		byte[] bt = decrypt(Base64.decode(data), password);
@@ -120,7 +120,7 @@ public enum  DesUtil {
 	 * @param src byte[]
 	 * @param key String
 	 * @return byte[]
-	 * @throws Exception
+	 * @throws Exception Exception
 	 */
 	private static byte[] decrypt(byte[] src, String key) throws Exception {
 		// The DES algorithm requires a trusted source of random numbers

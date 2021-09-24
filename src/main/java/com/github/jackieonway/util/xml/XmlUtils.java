@@ -26,6 +26,7 @@ public enum XmlUtils {
      *
      * @param xml   Xml data to be parsed
      * @param clazz Object class to be parsed
+     * @param <T> target class
      * @return Parsed objec
      */
     @SuppressWarnings("unchecked")
@@ -45,6 +46,7 @@ public enum XmlUtils {
      * @param xml   Xml data to be parsed
      * @param clazz Object class to be parsed
      * @param format Time format
+     * @param <T> target class
      * @return Parsed object
      */
     @SuppressWarnings("unchecked")
@@ -63,6 +65,7 @@ public enum XmlUtils {
      *
      * @param obj Object
      * @param map Alias ​​collection key- alias value-the class requiring the alias
+     * @param <T> target class
      * @return xml string
      */
     public static <T> String toXml(Object obj, Map<String, Class<T>> map) {
@@ -82,6 +85,7 @@ public enum XmlUtils {
      * @param obj Object
      * @param map Alias ​​collection key- alias value-the class requiring the alias
      * @param format Time format
+     * @param <T> target class
      * @return xml string
      */
     public static <T> String toXml(Object obj, Map<String, Class<T>> map, String format) {

@@ -39,7 +39,7 @@ public enum  PasswordUtil {
     /**
      * 随机生成8位到 (8+len)位长度密码
      * @param len 后续长度
-     * @return
+     * @return  password
      */
     public static String randomPassword(Integer len) {
         StringBuilder stringBuilder = new StringBuilder();

@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Jackie
@@ -83,6 +84,7 @@ public enum  DateUtils {
     /**
      * 以当天凌晨为时间点增加天数获得日期
      * @param i 天数(可为负值)
+     * @return date
      * */
     public static Date addDayAtZero(int i){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(DEFAULT_TIME_ZONE));
@@ -97,6 +99,7 @@ public enum  DateUtils {
     /**
      * 以当周凌晨为时间点增加周数获得日期
      * @param i 天数(可为负值)
+     * @return date
      * */
     public static Date addWeekAtZero(int i){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(DEFAULT_TIME_ZONE));
@@ -111,6 +114,7 @@ public enum  DateUtils {
     /**
      * 以当月凌晨为时间点增加月数获得日期
      * @param i 天数(可为负值)
+     * @return date
      * */
     public static Date addMoonAtZero(int i){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(DEFAULT_TIME_ZONE));
@@ -125,6 +129,7 @@ public enum  DateUtils {
     /**
      * 以当年凌晨为时间点增加年数获得日期
      * @param i 天数(可为负值)
+     * @return date
      * */
     public static Date addYearAtZero(int i){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(DEFAULT_TIME_ZONE));
@@ -228,10 +233,13 @@ public enum  DateUtils {
 
     /**
      * 计算i天的毫秒值
+     * @param i days
+     * @return millionsSeconds
      * */
     public static Long shortOfDay(int i){
         return 86400000L*i;
     }
+
 
     public static Date convertStringToDate(String aMask, String strDate)
             throws ParseException {
@@ -259,6 +267,12 @@ public enum  DateUtils {
     }
 
 
+    /**
+     * convert date to pattern string date
+     * @param aDate date
+     * @param pattern format pattern
+     * @return string date
+     */
     public static String convertDateToString(Date aDate, String pattern) {
         return getDateTime(pattern, aDate);
     }
@@ -266,9 +280,10 @@ public enum  DateUtils {
     /**
      * 根据日期获取生肖
      *
-     * @return
+     * @param date date
+     * @return Zodiac
      */
-    public static String getZodica(Date date) {
+    public static String getZodiac(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return ZODIAC_ARR[cal.get(Calendar.YEAR) % 12];
@@ -277,7 +292,8 @@ public enum  DateUtils {
     /**
      * 根据日期获取星座
      *
-     * @return
+     * @param  date date
+     * @return Constellation
      */
     public static String getConstellation(Date date) {
         if (date == null) {
@@ -426,6 +442,7 @@ public enum  DateUtils {
     /**
      * 获取指定时间所在周的开始时间
      *
+     * @param date  date
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static Date getBeginDayOfWeekByDate( Date date) {
@@ -442,6 +459,7 @@ public enum  DateUtils {
     /**
      * 获取指定时间所在周的结束时间
      *
+     * @param date  date
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static Date getEndDayOfWeekByDate(Date date) {
@@ -503,6 +521,7 @@ public enum  DateUtils {
     /**
      * 获取指定月的结束时间
      *
+     * @param date date
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static String getMonthEnd(Date date) {
@@ -519,6 +538,7 @@ public enum  DateUtils {
     /**
      * 获取指定月的开始时间
      *
+     * @param date date
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static String getMonthBegin(Date date){
@@ -534,6 +554,7 @@ public enum  DateUtils {
     /**
      * 获取近num月或将来num月的开始时间
      *
+     * @param num months
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static Date getBeginDayOfMonth(int num) {
@@ -545,6 +566,7 @@ public enum  DateUtils {
     /**
      * 获取近num月或将来num月的结束时间
      *
+     * @param num months
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static Date getEndDayOfMonth(int num) {
@@ -685,7 +707,7 @@ public enum  DateUtils {
     /**
      * 获取某个日期的开始时间
      *
-     * @param d
+     * @param d date
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static Timestamp getDayBeginTime(Date d) {
@@ -702,7 +724,7 @@ public enum  DateUtils {
     /**
      * 获取某个日期所属月份的第一天的开始时间
      *
-     * @param d
+     * @param d date
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static Timestamp getDayOfMonthBeginTime(Date d) {
@@ -719,7 +741,7 @@ public enum  DateUtils {
     /**
      * 获取某个日期所属月份的下一月的第一天的开始时间
      *
-     * @param d
+     * @param d date
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static Timestamp getDayOfNextMonthBeginTime(Date d) {
@@ -736,7 +758,7 @@ public enum  DateUtils {
     /**
      * 获取某个日期所属年份的第一天的开始时间
      *
-     * @param d
+     * @param d date
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static Timestamp getDayOfYearBeginTime(Date d) {
@@ -753,7 +775,7 @@ public enum  DateUtils {
     /**
      * 获取某个日期所属年份的下一年的第一天的开始时间
      *
-     * @param d
+     * @param d date
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static Timestamp getDayOfNextYearBeginTime(Date d) {
@@ -770,7 +792,7 @@ public enum  DateUtils {
     /**
      * 获取某个日期的结束时间
      *
-     * @param d
+     * @param d date
      * @return yyyy-MM-dd HH:mm:ss  格式
      */
     public static Timestamp getDayEndTime(Date d) {
@@ -787,9 +809,9 @@ public enum  DateUtils {
     /**
      * 获取某年某月的第一天
      *
-     * @param year
-     * @param month
-     * @return
+     * @param year year
+     * @param month month
+     * @return date
      */
     public static Date getBeginMonthDate(int year, int month) {
         Calendar calendar = Calendar.getInstance();
@@ -800,9 +822,9 @@ public enum  DateUtils {
     /**
      * 获取某年某月的最后一天
      *
-     * @param year
-     * @param month
-     * @return
+     * @param year year
+     * @param month month
+     * @return date
      */
     public static Date getEndMonthDate(int year, int month) {
         Calendar calendar = Calendar.getInstance();
@@ -815,7 +837,7 @@ public enum  DateUtils {
     /**
      * 获取今年是哪一年
      *
-     * @return
+     * @return year
      */
     public static Integer getNowYear() {
         Date date = new Date();
@@ -827,7 +849,8 @@ public enum  DateUtils {
     /**
      * 获取指定时间的年
      *
-     * @return
+     * @param date  date
+     * @return year
      */
     public static Integer getYear(Date date) {
         GregorianCalendar gc = (GregorianCalendar) Calendar.getInstance();
@@ -838,7 +861,7 @@ public enum  DateUtils {
     /**
      * 获取本月是哪一月
      *
-     * @return
+     * @return month
      */
     public static int getNowMonth() {
         Date date = new Date();
@@ -849,8 +872,8 @@ public enum  DateUtils {
 
     /**
      * 获取指定时间的月
-     *
-     * @return
+     * @param date date
+     * @return month
      */
     public static int getMonth(Date date) {
         GregorianCalendar gc = (GregorianCalendar) Calendar.getInstance();
@@ -861,9 +884,9 @@ public enum  DateUtils {
     /**
      * 两个日期相减得到的天数
      *
-     * @param beginDate
-     * @param endDate
-     * @return
+     * @param beginDate begin date
+     * @param endDate end date
+     * @return days
      */
     public static int getDiffDays(Date beginDate, Date endDate) {
 
@@ -880,9 +903,9 @@ public enum  DateUtils {
     /**
      * 两个日期相减得到的毫秒数
      *
-     * @param beginDate
-     * @param endDate
-     * @return
+     * @param beginDate begin date
+     * @param endDate end date
+     * @return millionsSeconds
      */
     public static long dateDiff(Date beginDate, Date endDate) {
         long date1ms = beginDate.getTime();
@@ -893,9 +916,9 @@ public enum  DateUtils {
     /**
      * 获取两个日期中的最大日期
      *
-     * @param beginDate
-     * @param endDate
-     * @return
+     * @param beginDate  begin Date
+     * @param endDate end Date
+     * @return max date
      */
     public static Date max(Date beginDate, Date endDate) {
         if (beginDate == null) {
@@ -913,9 +936,9 @@ public enum  DateUtils {
     /**
      * 获取两个日期中的最小日期
      *
-     * @param beginDate
-     * @param endDate
-     * @return
+     * @param beginDate  begin Date
+     * @param endDate  end Date
+     * @return min date
      */
     public static Date min(Date beginDate, Date endDate) {
         if (beginDate == null) {
@@ -933,8 +956,8 @@ public enum  DateUtils {
     /**
      * 返回某月该季度的第一个月
      *
-     * @param date
-     * @return
+     * @param date date
+     * @return month of season
      */
     public static Date getFirstSeasonDate(Date date) {
         final int[] season = {1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4};
@@ -948,9 +971,9 @@ public enum  DateUtils {
     /**
      * 返回某个日期下几天的日期
      *
-     * @param date
-     * @param i
-     * @return
+     * @param date date
+     * @param i next days
+     * @return  date
      */
     public static Date getNextDay(Date date, int i) {
         Calendar cal = new GregorianCalendar();
@@ -962,9 +985,9 @@ public enum  DateUtils {
     /**
      * 返回某个日期前几天的日期
      *
-     * @param date
-     * @param i
-     * @return
+     * @param date date
+     * @param i before days
+     * @return date
      */
     public static Date getFrontDay(Date date, int i) {
         Calendar cal = new GregorianCalendar();
@@ -976,12 +999,12 @@ public enum  DateUtils {
     /**
      * 获取某年某月到某年某月按天的切片日期集合（间隔天数的日期集合）
      *
-     * @param beginYear
-     * @param beginMonth
-     * @param endYear
-     * @param endMonth
-     * @param k
-     * @return
+     * @param beginYear  begin Year
+     * @param beginMonth begin Month
+     * @param endYear end Year
+     * @param endMonth end Month
+     * @param k days
+     * @return date collection
      */
     public static List<List<Date>> getTimeList(int beginYear, int beginMonth, int endYear,
                                                int endMonth, int k) {
@@ -1014,7 +1037,7 @@ public enum  DateUtils {
      * @param beginYear 开始年
      * @param beginMonth 开始月
      * @param k 间隔时间
-     * @return
+     * @return date collection
      */
     public static List<Date> getTimeList(int beginYear, int beginMonth, int k) {
         List<Date> list = new ArrayList<>();
@@ -1034,8 +1057,9 @@ public enum  DateUtils {
      *
      * @param beginYear 开始年
      * @param beginMonth 开始月
+     * @param dayOfMonth begin day
      * @param k 间隔时间
-     * @return
+     * @return date collection
      */
     public static List<Date> getTimeListByHour(int beginYear, int beginMonth, int dayOfMonth, int k) {
         List<Date> list = new ArrayList<>();
@@ -1054,8 +1078,9 @@ public enum  DateUtils {
      * yyyy-MM-dd HH:mm:ss.SSS
      *
      * @param  date 待格式化时间
+     * @return String
      */
-    public static String formatHaomiao(Date date) {
+    public static String formatMillions(Date date) {
         SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         return sd.format(date);
     }
@@ -1066,6 +1091,7 @@ public enum  DateUtils {
      * yyyy-MM-dd HH:mm:ss
      *
      * @param date 待格式化时间
+     * @return string date
      */
     public static String format(Date date) {
         SimpleDateFormat sd = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
@@ -1077,7 +1103,8 @@ public enum  DateUtils {
      * yyyy-MM-dd HH:mm:ss
      *
      *  @param  date 待格式化时间
-     *  @return
+     *  @param  pattern pattern
+     *  @return patten date
      */
     public static String formatPattern(Date date, String pattern) {
         SimpleDateFormat sd = new SimpleDateFormat(pattern);

@@ -123,7 +123,7 @@ public class SFTPUtils{
      * @param fileFormat：下载文件格式(以特定字符开头,为空不做检验)
      * @param fileEndFormat：下载文件格式(文件格式)
      * @param del：下载后是否删除sftp文件
-     * @return
+     * @return files
      */
     public List<String> batchDownLoadFile(String remotePath, String localPath,
             String fileFormat, String fileEndFormat, boolean del) {
@@ -204,7 +204,7 @@ public class SFTPUtils{
      * @param remoteFileName：下载文件名
      * @param localPath：本地保存目录(以路径符号结束)
      * @param localFileName：保存文件名
-     * @return
+     * @return result
      */
     public boolean downloadFile(String remotePath, String remoteFileName,String localPath, String localFileName){
         FileOutputStream fieloutput = null;
@@ -267,7 +267,7 @@ public class SFTPUtils{
      * @param remoteFileName：保存文件名
      * @param localPath：本地上传目录(以路径符号结束)
      * @param localFileName：上传的文件名
-     * @return
+     * @return result
      */
     public boolean uploadFile(String remotePath, String remoteFileName,String localPath, String localFileName){
         FileInputStream in = null;
@@ -296,7 +296,7 @@ public class SFTPUtils{
      * @param remotePath：远程保存目录
      * @param remoteFileName：保存文件名
      * @param is 文件输入流
-     * @return
+     * @return result
      */
     public boolean uploadFile(String remotePath, String remoteFileName,InputStream is){
         try{
@@ -314,7 +314,7 @@ public class SFTPUtils{
      * @param remotePath：远程保存目录
      * @param localPath：本地上传目录(以路径符号结束)
      * @param del：上传后是否删除本地文件
-     * @return
+     * @return result
      */
     public boolean batchUploadFile(String remotePath, String localPath, boolean del){
         try{
@@ -348,8 +348,8 @@ public class SFTPUtils{
 
     /**
      * 删除本地文件
-     * @param filePath
-     * @return
+     * @param filePath filePath
+     * @return result
      */
     public boolean deleteFile(String filePath){
         File file = new File(filePath);
@@ -368,8 +368,8 @@ public class SFTPUtils{
 
     /**
      * 创建目录
-     * @param createpath
-     * @return
+     * @param createpath createpath
+     * @return result
      */
     public boolean createDir(String createpath){
         try{
@@ -407,8 +407,8 @@ public class SFTPUtils{
 
     /**
      * 判断远程目录是否存在
-     * @param directory
-     * @return
+     * @param directory directory
+     * @return dir is exist or not
      */
     public boolean isDirExist(String directory){
         boolean isDirExistFlag = false;
@@ -444,8 +444,8 @@ public class SFTPUtils{
      * 列出目录下的文件
      * 
      * @param directory：要列出的目录
-     * @return
-     * @throws SftpException
+     * @return files
+     * @throws SftpException exception
      */
     public Vector listFiles(String directory) throws SftpException{
         return sftp.ls(directory);

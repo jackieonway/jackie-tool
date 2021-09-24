@@ -11,6 +11,7 @@ public enum  ArrayUtils {
     /**
          * 将数组转换成"1,2,3..."的字符串格式
          *
+         * @param <T> type of array
          * @param ts 数据
          * @param connector 连接符
          * @return 字符串
@@ -28,6 +29,7 @@ public enum  ArrayUtils {
         /**
          * 将List转换成"1,2,3..."的字符串格式
          *
+         * @param <T> type of collection
          * @param collection 对象集合
          * @param connector 连接符
          * @return 字符串

@@ -12,30 +12,7 @@ import java.util.function.UnaryOperator;
 
 /**
  * <p>Base Bean for any beans.
- * <p>if want to convert bean , can use:
- *     <blockquote><pre>
- *         public class DTO implements BaseBean {
- *              <b>@Override
- *              public Map<String, String> configMap(){
- *                  return config();
- *              }
- *              
- *              public static Map<String, String> config(){
- *                  return null;
- *              }
- *              
- *              <b>@Override
- *              public List<String> excludeFields(){
- *                  return excludes();
- *              }
- *              
- *              public static excludes(){
- *                  return null;
- *              }
- *         }
- *     </pre></blockquote>
  * <p>also can use: {@link BeanUtils#copyProperties(Object, Class, Map, List)}
- * <p>
  * <p>if want to convert for list, can use:
  * <blockquote><pre>
  *         DO.convertList(list,DTO.class, DTO.config(),DTO.excludes());
@@ -49,9 +26,9 @@ public interface BaseBean {
     /**
      * convert single source object to target object
      * @param clazz target class
+     * @param <E> target class
      * @return  target object
      * @author  Jackie
-     * @date  2021/9/1 17:22
      * @since 1.0.2
      * @see BaseBean
      */
@@ -62,9 +39,10 @@ public interface BaseBean {
     /**
      * convert single source object to target object
      * @param clazz target class
+     * @param <E> target class
+     * @param function function
      * @return  target object
      * @author  Jackie
-     * @date  2021/9/1 17:22
      * @since 1.0.2
      * @see BaseBean
      */
@@ -74,10 +52,9 @@ public interface BaseBean {
     }
 
     /**
-     * custom convert for bean ,such as : name -> userName;  hobby -> info.hobby
+     * custom convert for bean ,such as : name :userName;  hobby : info.\hobby
      * @return config map
      * @author  Jackie
-     * @date  2021/9/7 17:05
      * @since 1.0.2
      * @see BaseBean
      */
@@ -87,7 +64,6 @@ public interface BaseBean {
      * exclude fields for bean convert
      * @return exclude field list
      * @author  Jackie
-     * @date  2021/9/7 17:07
      * @since 1.0
      * @see BaseBean
      */
@@ -95,10 +71,14 @@ public interface BaseBean {
 
     /**
      * convert source object list to target object list
+     * @param source source
      * @param clazz target class
+     * @param configMap configMap
+     * @param excludeFields excludeFields
+     * @param <T> source class
+     * @param <E> target class
      * @return  target object
      * @author  Jackie
-     * @date  2021/9/1 17:22
      * @since 1.0.2
      * @see BaseBean
      */
@@ -109,10 +89,15 @@ public interface BaseBean {
 
     /**
      * convert source object list to target object list
+     * @param source source
      * @param clazz target class
+     * @param configMap configMap
+     * @param excludeFields excludeFields
+     * @param function function
+     * @param <T> source class
+     * @param <E> target class
      * @return  target object
      * @author  Jackie
-     * @date  2021/9/1 17:22
      * @since 1.0.2
      * @see BaseBean
      */

@@ -57,10 +57,10 @@ public enum ExcelExportUtils {
 
     /**
      * export excel
+     * @param outputStream export outputStream
      * @param collection export collection
      * @param clazz export class
      * @author  Jackie
-     * @date  2021/9/17 9:44
      * @since 1.0.2
      * @see ExcelExportUtils
      */

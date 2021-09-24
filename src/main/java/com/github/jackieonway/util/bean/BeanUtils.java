@@ -41,6 +41,8 @@ public enum BeanUtils {
      *
      * @param source    数据（对象）
      * @param targetClass 目标类
+     * @param <T> source class
+     * @param <E> target class
      * @return 目标类对象
      */
     public static  <E, T> E copyProperties(T source, Class<E> targetClass) {
@@ -53,6 +55,8 @@ public enum BeanUtils {
      * @param source    数据（对象）
      * @param targetClass 目标类
      * @param configMap 自定义配置
+     * @param <T> source class
+     * @param <E> target class
      * @return 目标类对象
      */
     public static <E, T> E copyProperties(T source, Class<E> targetClass, Map<String, String> configMap) {
@@ -66,6 +70,8 @@ public enum BeanUtils {
      * @param targetClass 目标类
      * @param configMap 自定义配置
      * @param excludeFields excluded field
+     * @param <T> source class
+     * @param <E> target class
      * @return 目标类对象
      */
     public static <E, T> E copyProperties(T source, Class<E> targetClass, Map<String, String> configMap,
@@ -79,6 +85,8 @@ public enum BeanUtils {
      *
      * @param source    数据（集合）
      * @param targetClass 目标类
+     * @param <T> source class
+     * @param <E> target class
      * @return 目标类对象集合
      */
     public static <E, T> List<E> copyProperties(List<T> source, Class<E> targetClass) {
@@ -91,6 +99,8 @@ public enum BeanUtils {
      * @param source    数据（集合）
      * @param targetClass 目标类
      * @param configMap 自定义配置
+     * @param <T> source class
+     * @param <E> target class
      * @return 目标类对象集合
      */
     public static <E, T> List<E> copyProperties(List<T> source, Class<E> targetClass,
@@ -105,6 +115,8 @@ public enum BeanUtils {
      * @param targetClass 目标类
      * @param configMap 自定义配置
      * @param excludeFields excluded field
+     * @param <T> source class
+     * @param <E> target class
      * @return 目标类对象集合
      */
     public static <E, T> List<E> copyProperties(List<T> source, Class<E> targetClass,
@@ -132,6 +144,8 @@ public enum BeanUtils {
      * @param targetClass 目标类
      * @param configMap 自定义配置
      * @param excludeFields excluded field
+     * @param <T> source class
+     * @param <E> target class
      * @return 目标类对象集合
      */
     public static <E, T> Collection<E> copyProperties(Collection<T> source, Collection<E> destination,
@@ -147,6 +161,8 @@ public enum BeanUtils {
      * 转换实体（默认字段）浅复制
      * @param source 数据（对象）
      * @param targetClass 目标类
+     * @param <T> source class
+     * @param <E> target class
      * @return 目标类
      */
     public static <T, E> E copyPropertiesByBeanCopier(T source, Class<E> targetClass) {
@@ -172,6 +188,8 @@ public enum BeanUtils {
      * 浅拷贝
      * @param source    数据（集合）
      * @param targetClass 目标类
+     * @param <T> source class
+     * @param <E> target class
      * @return 目标类对象集合
      */
     public static <E, T> List<E> copyPropertiesByBeanCopier(List<T> source, Class<E> targetClass) {
@@ -187,6 +205,8 @@ public enum BeanUtils {
      * @param sourceClass 数据映射类
      * @param targetClass   映射类
      * @param configMap 自定义配置
+     * @param <T> source class
+     * @param <E> target class
      * @return 映射类对象
      */
     private static <E, T> MapperFacade getMapperFacade(Class<T> sourceClass, Class<E> targetClass,

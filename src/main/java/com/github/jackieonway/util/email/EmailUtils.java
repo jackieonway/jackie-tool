@@ -21,6 +21,7 @@ public enum EmailUtils {
     /**
      * 发送单个用户简单邮件
      *
+     * @param jms       sender
      * @param sender     发送者
      * @param receiver   接收者
      * @param carbonCopy 抄送者
@@ -49,6 +50,7 @@ public enum EmailUtils {
     /**
      * 发送多个用户简单邮件
      *
+     * @param jms       sender
      * @param sender       发送者
      * @param receivers    接收者列表
      * @param carbonCopies 抄送者列表
@@ -79,6 +81,7 @@ public enum EmailUtils {
     /**
      * 发送单个用户HTML邮件
      *
+     * @param jms       sender
      * @param sender     发送者
      * @param receiver   接收者
      * @param carbonCopy 抄送者
@@ -108,6 +111,7 @@ public enum EmailUtils {
     /**
      * 发送用户HTML邮件
      *
+     * @param jms       sender
      * @param sender       发送者
      * @param receiver     接收者列表
      * @param carbonCopies 抄送者列表
@@ -135,6 +139,7 @@ public enum EmailUtils {
     /**
      * 发送单个用户带附件邮件
      *
+     * @param jms       sender
      * @param sender     发送者
      * @param receiver   接收者
      * @param carbonCopy 抄送者
@@ -168,6 +173,7 @@ public enum EmailUtils {
     /**
      * 发送带附件邮件
      *
+     * @param jms       sender
      * @param sender       发送者
      * @param receiver     接收者列表
      * @param carbonCopies 抄送者列表

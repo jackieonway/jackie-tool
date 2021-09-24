@@ -110,9 +110,9 @@ public enum  StringUtils {
     /**
      * 将对象的大写转换为下划线加小写，例如：userName-- user_name
      * 
-     * @param object
-     * @return
-     * @throws JsonProcessingException
+     * @param object object
+     * @return String
+     * @throws JsonProcessingException exception
      */
     public static String toUnderlineJSONString(Object object) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
@@ -124,10 +124,11 @@ public enum  StringUtils {
     /**
      * 将下划线转换为驼峰的形式，例如：user_name--userName
      * 
-     * @param json
-     * @param clazz
-     * @return
-     * @throws IOException
+     * @param json json string
+     * @param clazz class
+     * @param <T> target class
+     * @return object
+     * @throws IOException exception
      */
     public static <T> T toSnakeObject(String json, Class<T> clazz) throws IOException{
         ObjectMapper mapper = new ObjectMapper();

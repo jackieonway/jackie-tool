@@ -23,6 +23,8 @@ public enum  PropertyUtils {
     /**
      * 不带/
      *
+     * @param name property name
+     * @return property value
      */
     public static String getValue1(String name) {
         String value = System.getProperty(name);

@@ -29,7 +29,7 @@ import java.util.Objects;
 public enum  QrCodeUtils {
 
     /**
-     * qrcode utills instance
+     * qrcode utils instance
      */
     INSTANCE;
 
@@ -120,7 +120,6 @@ public enum  QrCodeUtils {
          * @param height qr code height
          * @param imgPath images Path
          * @author  Jackie
-         * @date  2021/9/7 11:35
          * @since 1.0.2
          */
         public static void encode(String contents, int width, int height, String imgPath) {
@@ -141,7 +140,6 @@ public enum  QrCodeUtils {
          * @param height qrcode height
          * @param outputStream qrcode outputStream
          * @author  Jackie
-         * @date  2021/9/7 11:35
          * @since 1.0.2
          */
         public static void encode(String contents, int width, int height, OutputStream outputStream) {
@@ -168,7 +166,6 @@ public enum  QrCodeUtils {
          * @param height qrcode height
          * @return bufferedImage
          * @author  Jackie
-         * @date  2021/9/7 11:35
          * @since 1.0.2
          */
         public static BufferedImage encode(String contents, int width, int height) {
@@ -191,7 +188,6 @@ public enum  QrCodeUtils {
          * @param imgPath images path
          * @return  contents
          * @author  Jackie
-         * @date  2021/9/7 11:37
          * @since 1.0.2
          */
         public static String decode(String imgPath) {
@@ -205,7 +201,6 @@ public enum  QrCodeUtils {
          * @param inputStream qrcode inputStream
          * @return  contents
          * @author  Jackie
-         * @date  2021/9/7 11:37
          * @since 1.0.2
          */
         public static String decode(InputStream inputStream) {
@@ -288,7 +283,6 @@ public enum  QrCodeUtils {
          * @param height barcode height
          * @param imgPath images Path
          * @author  Jackie
-         * @date  2021/9/7 11:35
          * @since 1.0.2
          */
         public static void encode(String contents, int width, int height, String imgPath) {
@@ -310,7 +304,6 @@ public enum  QrCodeUtils {
          * @param height barcode height
          * @param outputStream barcode outputStream
          * @author  Jackie
-         * @date  2021/9/7 11:35
          * @since 1.0.2
          */
         public static void encode(String contents, int width, int height, OutputStream outputStream) {
@@ -338,7 +331,6 @@ public enum  QrCodeUtils {
          * @param height barcode height
          * @return bufferedImage
          * @author  Jackie
-         * @date  2021/9/7 11:35
          * @since 1.0.2
          */
         public static BufferedImage encode(String contents, int width, int height) {
@@ -364,7 +356,6 @@ public enum  QrCodeUtils {
          * @param bufferedImage not use param
          * @return bufferedImage
          * @author  Jackie
-         * @date  2021/9/7 11:35
          * @since 1.0.2
          */
         private static BufferedImage encode(String contents, int width, int height, BufferedImage bufferedImage) {
@@ -439,7 +430,6 @@ public enum  QrCodeUtils {
          * @param imgPath images path
          * @return  contents
          * @author  Jackie
-         * @date  2021/9/7 11:37
          * @since 1.0.2
          */
         public static String decode(String imgPath) {
@@ -452,7 +442,6 @@ public enum  QrCodeUtils {
          * @param inputStream qrcode inputStream
          * @return  contents
          * @author  Jackie
-         * @date  2021/9/7 11:37
          * @since 1.0.2
          */
         public static String decode(InputStream  inputStream) {

@@ -70,7 +70,7 @@ public enum  VerifyCodeUtils {
      * 使用系统默认字符源生成验证码
      *
      * @param verifySize 验证码长度
-     * @return
+     * @return String
      */
     public static String generateVerifyCode(int verifySize) {
         return generateVerifyCode(verifySize, VERIFY_CODES);
@@ -81,7 +81,7 @@ public enum  VerifyCodeUtils {
      *
      * @param verifySize 验证码长度
      * @param sources    验证码字符源
-     * @return
+     * @return String
      */
     public static String generateVerifyCode(int verifySize, String sources) {
         if (sources == null || sources.length() == 0) {
@@ -97,6 +97,12 @@ public enum  VerifyCodeUtils {
 
     /**
      * 生成随机验证码文件,并返回验证码值
+     *
+     * @param w width
+     * @param h height
+     * @param outputFile outputFile
+     * @param verifySize verifySize
+     * @return verifyCode
      */
     public static String generateVerifyCode(int w, int h, File outputFile, int verifySize) throws IOException {
         String verifyCode = generateVerifyCode(verifySize);
@@ -106,6 +112,12 @@ public enum  VerifyCodeUtils {
 
     /**
      * 输出随机验证码图片流,并返回验证码值
+     *
+     * @param w width
+     * @param h height
+     * @param os OutputStream
+     * @param verifySize verifySize
+     * @return verifyCode
      */
     public static String generateVerifyCode(int w, int h, OutputStream os, int verifySize) throws IOException {
         String verifyCode = generateVerifyCode(verifySize);
@@ -115,6 +127,11 @@ public enum  VerifyCodeUtils {
 
     /**
      * 生成指定验证码图像文件
+     *
+     * @param w width
+     * @param h height
+     * @param outputFile outputFile
+     * @param code verifySize
      */
     public static void generateVerifyCode(int w, int h, File outputFile, String code) throws IOException {
         if (outputFile == null) {
@@ -134,6 +151,9 @@ public enum  VerifyCodeUtils {
 
     /**
      * 输出指定验证码图片流
+     *
+     * @param response HttpServletResponse
+     * @param code verifySize
      */
     public static void generateVerifyCode(String code, HttpServletResponse response) throws IOException {
         int w = 280;
@@ -205,6 +225,11 @@ public enum  VerifyCodeUtils {
 
     /**
      * 输出指定验证码图片流
+     *
+     * @param w width
+     * @param h height
+     * @param os  OutputStream
+     * @param code code string
      */
     public static void generateVerifyCode(int w, int h, OutputStream os, String code) throws IOException {
         int verifySize = code.length();
@@ -340,7 +365,8 @@ public enum  VerifyCodeUtils {
     /**
      * 生成中文字符
      *
-     * @return
+     * @param len length
+     * @return chinese map
      */
     public static Map<String, Object> getChinese(int len) {
         Map<String, Object> map = new HashMap<>();
@@ -365,7 +391,7 @@ public enum  VerifyCodeUtils {
     /**
      * 获取加减乘验证码  暂时没有乘法验证码
      *
-     * @return
+     * @return text
      */
     public static Map<String, Object> getText() {
         Map<String, Object> map = new HashMap<>();
