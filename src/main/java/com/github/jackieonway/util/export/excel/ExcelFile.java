@@ -4,6 +4,8 @@
  */
 package com.github.jackieonway.util.export.excel;
 
+import org.apache.poi.ss.usermodel.Font;
+
 import java.lang.annotation.*;
 
 /**
@@ -16,9 +18,39 @@ import java.lang.annotation.*;
 public @interface ExcelFile {
 
     /**
-     * export excel file name
+     * export excel sheet name
      */
     String sheetName();
+
+    /**
+     * export excel title height
+     */
+    short height() default 20;
+
+    /**
+     * excel title font name
+     */
+    String fontName() default "宋体";
+
+    /**
+     * excel title font size
+     */
+    short fontSize() default 20;
+
+    /**
+     * excel title color
+     */
+    short  color() default Font.COLOR_NORMAL;
+
+    /**
+     * excel title bold
+     */
+    boolean bold() default true;
+
+    /**
+     * excel title italic
+     */
+    boolean italic() default false;
 
     /**
      * excel type ,default type: xlsx,
