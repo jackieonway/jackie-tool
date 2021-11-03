@@ -5,6 +5,7 @@
 package com.github.jackieonway.util.export.excel;
 
 import com.github.jackieonway.util.collection.CollectionUtils;
+import com.github.jackieonway.util.export.ExcelTools;
 import com.github.jackieonway.util.export.ExportException;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
@@ -17,10 +18,9 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Jackie
@@ -36,12 +36,6 @@ public enum ExcelExportUtils {
      * max export number for excel 2003
      */
     private static final int MAX_EXPORT_NUM_EXCEL_2003 = 65536;
-    private static final Pattern NUMERIC_PATTERN = Pattern.compile("[-+]?(([0-9]+)([.]([0-9]+))?|([.]([0-9]+))?)$");
-
-    private static final Map<String, Map<Integer, Map<String, Object>>> CLASS_FIELD_CACHE =
-            new ConcurrentHashMap<>(512);
-
-    private static final Map<String, Map<String, Object>> CLASS_FILE_CACHE = new ConcurrentHashMap<>(512);
 
     private static final String HEIGHT = "height";
     private static final String BOLD = "bold";
@@ -74,22 +68,7 @@ public enum ExcelExportUtils {
         if (Objects.isNull(outputStream)){
             throw new ExportException("export outputStream is null");
         }
-        Map<String, Object> excelFileMap = CLASS_FILE_CACHE.get(clazz.getName());
-        if (CollectionUtils.isEmpty(excelFileMap)) {
-            synchronized (INSTANCE) {
-                ExcelFile excelFile = clazz.getAnnotation(ExcelFile.class);
-                excelFileMap = new HashMap<>();
-                excelFileMap.put("sheetName", excelFile.sheetName());
-                excelFileMap.put(HEIGHT, excelFile.height());
-                excelFileMap.put(BOLD, excelFile.bold());
-                excelFileMap.put(ITALIC, excelFile.italic());
-                excelFileMap.put(COLOR, excelFile.color());
-                excelFileMap.put(FONT_NAME, excelFile.fontName());
-                excelFileMap.put(FONT_SIZE, excelFile.fontSize());
-                excelFileMap.put(TYPE, excelFile.type());
-                CLASS_FILE_CACHE.put(clazz.getName(), excelFileMap);
-            }
-        }
+        Map<String, Object> excelFileMap = ExcelTools.putClassFileAndGet(clazz);
         final ExcelType excelType = (ExcelType)excelFileMap.get(TYPE);
         if (excelType.equals(ExcelType.XLS)) {
             if (collection.size() > MAX_EXPORT_NUM_EXCEL_2003){
@@ -106,7 +85,7 @@ public enum ExcelExportUtils {
         final String sheetName = excelFileMap.get("sheetName").toString();
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
         HSSFSheet workbookSheet = hssfWorkbook.createSheet(sheetName);
-        Map<Integer, Map<String, Object>> headers = getHeaderMap(clazz);
+        Map<Integer, Map<String, Object>> headers = ExcelTools.putAndGetFields(clazz);
         createTitleRow(sheetName, hssfWorkbook,workbookSheet, headers.size() - 1, excelFileMap);
         HSSFRow headerRow = workbookSheet.createRow(1);
         headers.forEach((key,value) ->{
@@ -137,23 +116,12 @@ public enum ExcelExportUtils {
         }
     }
 
-    private static <T> Map<Integer, Map<String, Object>> getHeaderMap(Class<T> clazz) {
-        Map<Integer, Map<String, Object>> headers = CLASS_FIELD_CACHE.get(clazz.getName());
-        if (CollectionUtils.isEmpty(headers)) {
-            synchronized (INSTANCE) {
-                Field[] declaredFields = clazz.getDeclaredFields();
-                headers = getHeaders(declaredFields,clazz.getName());
-            }
-        }
-        return headers;
-    }
-
     private static <E> void doExportXlsx(OutputStream outputStream, Collection<E> collection,
                                          Class<E> clazz, Map<String, Object> excelFileMap) {
         final String sheetName = excelFileMap.get("sheetName").toString();
         SXSSFWorkbook sxssfWorkbook = new SXSSFWorkbook();
         SXSSFSheet workbookSheet = sxssfWorkbook.createSheet(sheetName);
-        Map<Integer, Map<String, Object>> headers = getHeaderMap(clazz);
+        Map<Integer, Map<String, Object>> headers = ExcelTools.putAndGetFields(clazz);
         createTitleRow(sheetName, sxssfWorkbook, workbookSheet, headers.size() - 1, excelFileMap);
         SXSSFRow headerRow = workbookSheet.createRow(1);
         headers.forEach((key,value) ->{
@@ -214,59 +182,31 @@ public enum ExcelExportUtils {
         } catch (IllegalAccessException e) {
             dataValue = "";
         }
+        Class<?> type = field.getType();
         if (Objects.isNull(dataValue)) {
             cell.setBlank();
-        } else if (isNumeric(dataValue.toString())) {
-            cell.setCellType(CellType.NUMERIC);
+        } else if (long.class.equals(type) || Long.class.equals(type)) {
             cell.setCellValue(dataValue.toString());
-        } else {
-            cell.setCellType(CellType.STRING);
+        } else if (double.class.equals(type) || Double.class.equals(type)) {
+            cell.setCellValue(Double.parseDouble(dataValue.toString()));
+        }  else if (int.class.equals(type) || Integer.class.equals(type)) {
+            cell.setCellValue(dataValue.toString());
+        } else if (float.class.equals(type) || Float.class.equals(type)) {
+            cell.setCellValue(Float.parseFloat(dataValue.toString()));
+        } else if (boolean.class.equals(type) || Boolean.class.equals(type)) {
+            cell.setCellValue(Boolean.parseBoolean(dataValue.toString()));
+        } else if (LocalDate.class.equals(type)) {
+            cell.setCellValue((LocalDate)dataValue);
+        } else if (LocalDateTime.class.equals(type)) {
+            cell.setCellValue((LocalDateTime)dataValue);
+        }else if (Date.class.equals(type)) {
+            cell.setCellValue((Date)dataValue);
+        }else {
             cell.setCellValue(dataValue.toString());
         }
         final CellStyle cellStyle = getHeaderCellStyle(workbook);
         cellStyle.setFont(createFont(workbook,value));
         cell.setCellStyle(cellStyle);
-    }
-
-
-    private static Map<Integer, Map<String, Object>> getHeaders(Field[] declaredFields,String className) {
-        Map<Integer,Map<String,Object>> headers = new TreeMap<>();
-        for(Field declaredField : declaredFields){
-            if(declaredField.isAnnotationPresent(ExcelField.class)){
-                if (!declaredField.isAnnotationPresent(ExcelIndex.class)) {
-                    throw new ExportException("Export excel can not find annotation ExcelIndex");
-                }
-                Map<String, Object> map = new HashMap<>();
-                ExcelIndex excelIndex = declaredField.getAnnotation(ExcelIndex.class);
-                ExcelField excelField = declaredField.getAnnotation(ExcelField.class);
-                map.put(WIDTH, excelField.width());
-                map.put(FIELD_NAME, excelField.fieldName());
-                map.put(HEIGHT, excelField.height());
-                map.put(BOLD, excelField.bold());
-                map.put(ITALIC, excelField.italic());
-                map.put(COLOR, excelField.color());
-                map.put(FONT_NAME, excelField.fontName());
-                map.put(FONT_SIZE, excelField.fontSize());
-                map.put(FIELD,declaredField);
-                headers.put(excelIndex.index(),map);
-            }
-        }
-        if (CollectionUtils.isEmpty(headers)){
-            throw new ExportException("can not find any export field!");
-        }
-        CLASS_FIELD_CACHE.put(className, headers);
-        return headers;
-    }
-
-    private static boolean isNumeric(String str) {
-        if (str == null || !"".equals(str.trim())) {
-            return false;
-        }
-        Matcher matcher = NUMERIC_PATTERN.matcher(str);
-        if (matcher.matches()) {
-            return str.contains(".") || !str.startsWith("0");
-        }
-        return false;
     }
 
     private static CellStyle getHeaderCellStyle(Workbook workbook){
