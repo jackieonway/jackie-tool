@@ -6,7 +6,6 @@ package com.github.jackieonway.util.export.excel;
 
 import com.github.jackieonway.util.collection.CollectionUtils;
 import com.github.jackieonway.util.export.ExportException;
-import org.apache.poi.hssf.eventusermodel.dummyrecord.LastCellOfRowDummyRecord;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -77,17 +76,19 @@ public enum ExcelExportUtils {
         }
         Map<String, Object> excelFileMap = CLASS_FILE_CACHE.get(clazz.getName());
         if (CollectionUtils.isEmpty(excelFileMap)) {
-            ExcelFile excelFile = clazz.getAnnotation(ExcelFile.class);
-            excelFileMap = new HashMap<>();
-            excelFileMap.put("sheetName", excelFile.sheetName());
-            excelFileMap.put(HEIGHT, excelFile.height());
-            excelFileMap.put(BOLD, excelFile.bold());
-            excelFileMap.put(ITALIC, excelFile.italic());
-            excelFileMap.put(COLOR, excelFile.color());
-            excelFileMap.put(FONT_NAME, excelFile.fontName());
-            excelFileMap.put(FONT_SIZE, excelFile.fontSize());
-            excelFileMap.put(TYPE, excelFile.type());
-            CLASS_FILE_CACHE.put(clazz.getName(), excelFileMap);
+            synchronized (INSTANCE) {
+                ExcelFile excelFile = clazz.getAnnotation(ExcelFile.class);
+                excelFileMap = new HashMap<>();
+                excelFileMap.put("sheetName", excelFile.sheetName());
+                excelFileMap.put(HEIGHT, excelFile.height());
+                excelFileMap.put(BOLD, excelFile.bold());
+                excelFileMap.put(ITALIC, excelFile.italic());
+                excelFileMap.put(COLOR, excelFile.color());
+                excelFileMap.put(FONT_NAME, excelFile.fontName());
+                excelFileMap.put(FONT_SIZE, excelFile.fontSize());
+                excelFileMap.put(TYPE, excelFile.type());
+                CLASS_FILE_CACHE.put(clazz.getName(), excelFileMap);
+            }
         }
         final ExcelType excelType = (ExcelType)excelFileMap.get(TYPE);
         if (excelType.equals(ExcelType.XLS)) {
@@ -139,8 +140,10 @@ public enum ExcelExportUtils {
     private static <T> Map<Integer, Map<String, Object>> getHeaderMap(Class<T> clazz) {
         Map<Integer, Map<String, Object>> headers = CLASS_FIELD_CACHE.get(clazz.getName());
         if (CollectionUtils.isEmpty(headers)) {
-            Field[] declaredFields = clazz.getDeclaredFields();
-            headers = getHeaders(declaredFields,clazz.getName());
+            synchronized (INSTANCE) {
+                Field[] declaredFields = clazz.getDeclaredFields();
+                headers = getHeaders(declaredFields,clazz.getName());
+            }
         }
         return headers;
     }
