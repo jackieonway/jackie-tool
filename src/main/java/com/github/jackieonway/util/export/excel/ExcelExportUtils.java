@@ -37,17 +37,6 @@ public enum ExcelExportUtils {
      */
     private static final int MAX_EXPORT_NUM_EXCEL_2003 = 65536;
 
-    private static final String HEIGHT = "height";
-    private static final String BOLD = "bold";
-    private static final String ITALIC = "italic";
-    private static final String COLOR = "color";
-    private static final String FONT_NAME = "fontName";
-    private static final String FONT_SIZE = "fontSize";
-    private static final String TYPE = "type";
-    private static final String FIELD_NAME = "fieldName";
-    private static final String WIDTH = "width";
-    private static final String FIELD = "field";
-
     /**
      * export excel
      * @param outputStream export outputStream
@@ -69,7 +58,7 @@ public enum ExcelExportUtils {
             throw new ExportException("export outputStream is null");
         }
         Map<String, Object> excelFileMap = ExcelTools.putClassFileAndGet(clazz);
-        final ExcelType excelType = (ExcelType)excelFileMap.get(TYPE);
+        final ExcelType excelType = (ExcelType)excelFileMap.get(ExcelTools.TYPE);
         if (excelType.equals(ExcelType.XLS)) {
             if (collection.size() > MAX_EXPORT_NUM_EXCEL_2003){
                 throw new ExportException("Excel 2003 type can export max less than 65536");
@@ -89,9 +78,9 @@ public enum ExcelExportUtils {
         createTitleRow(sheetName, hssfWorkbook,workbookSheet, headers.size() - 1, excelFileMap);
         HSSFRow headerRow = workbookSheet.createRow(1);
         headers.forEach((key,value) ->{
-            workbookSheet.setColumnWidth(key,((Integer) value.get(WIDTH)) * 256);
+            workbookSheet.setColumnWidth(key,((Integer) value.get(ExcelTools.WIDTH)) * 256);
             HSSFCell cell = headerRow.createCell(key);
-            cell.setCellValue(value.get(FIELD_NAME).toString());
+            cell.setCellValue(value.get(ExcelTools.FIELD_NAME).toString());
             final CellStyle cellStyle = getHeaderCellStyle(hssfWorkbook);
             final Font font = createFont(hssfWorkbook, value);
             font.setBold(true);
@@ -125,9 +114,9 @@ public enum ExcelExportUtils {
         createTitleRow(sheetName, sxssfWorkbook, workbookSheet, headers.size() - 1, excelFileMap);
         SXSSFRow headerRow = workbookSheet.createRow(1);
         headers.forEach((key,value) ->{
-            workbookSheet.setColumnWidth(key,((Integer) value.get(WIDTH)) * 256);
+            workbookSheet.setColumnWidth(key,((Integer) value.get(ExcelTools.WIDTH)) * 256);
             SXSSFCell cell = headerRow.createCell(key);
-            cell.setCellValue(value.get(FIELD_NAME).toString());
+            cell.setCellValue(value.get(ExcelTools.FIELD_NAME).toString());
             final CellStyle cellStyle = getHeaderCellStyle(sxssfWorkbook);
             final Font font = createFont(sxssfWorkbook, value);
             font.setBold(true);
@@ -155,7 +144,7 @@ public enum ExcelExportUtils {
 
     private static void createTitleRow(String sheetName, Workbook workbook, Sheet sheet, Integer
             lastCol, Map<String, Object> excelFileMap) {
-        final float height = Float.parseFloat(excelFileMap.get(HEIGHT).toString());
+        final float height = Float.parseFloat(excelFileMap.get(ExcelTools.HEIGHT).toString());
         Row titleRow = sheet.createRow(0);
         titleRow.createCell(0);
         CellRangeAddress cellRangeAddress = new CellRangeAddress(0, 0, 0, lastCol);
@@ -174,7 +163,7 @@ public enum ExcelExportUtils {
     }
 
     private static <E> void createRowData(Workbook workbook, E data, Map<String, Object> value, Cell cell) {
-        Field field = (Field) value.get(FIELD);
+        Field field = (Field) value.get(ExcelTools.FIELD);
         field.setAccessible(true);
         Object dataValue;
         try {
@@ -243,11 +232,11 @@ public enum ExcelExportUtils {
     }
 
     private static Font createFont(Workbook workbook, Map<String, Object> configMap){
-        final boolean bold = Boolean.parseBoolean(configMap.get(BOLD).toString());
-        final String fontName = configMap.get(FONT_NAME).toString();
-        final short color = Short.parseShort(configMap.get(COLOR).toString());
-        final short fontSize = Short.parseShort(configMap.get(FONT_SIZE).toString());
-        final boolean italic = Boolean.parseBoolean(configMap.get(ITALIC).toString());
+        final boolean bold = Boolean.parseBoolean(configMap.get(ExcelTools.BOLD).toString());
+        final String fontName = configMap.get(ExcelTools.FONT_NAME).toString();
+        final short color = Short.parseShort(configMap.get(ExcelTools.COLOR).toString());
+        final short fontSize = Short.parseShort(configMap.get(ExcelTools.FONT_SIZE).toString());
+        final boolean italic = Boolean.parseBoolean(configMap.get(ExcelTools.ITALIC).toString());
         Font font = workbook.createFont();
         font.setFontName(fontName);
         font.setBold(bold);

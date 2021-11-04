@@ -34,9 +34,6 @@ public enum ExcelImportUtils {
      */
     INSTANCE;
 
-    private static final String TYPE = "type";
-    private static final String FIELD_NAME = "fieldName";
-    private static final String FIELD = "field";
     public static final String NUMERIC = "NUMERIC";
     public static final String STRING = "STRING";
 
@@ -48,7 +45,7 @@ public enum ExcelImportUtils {
             throw new ExportException("import inputStream is null");
         }
         Map<String, Object> excelFileMap = ExcelTools.putClassFileAndGet(clazz);
-        final ExcelType excelType = (ExcelType)excelFileMap.get(TYPE);
+        final ExcelType excelType = (ExcelType)excelFileMap.get(ExcelTools.TYPE);
         if (excelType.equals(ExcelType.XLS)) {
            return doImportXls(inputStream, clazz,excelFileMap);
         }
@@ -132,7 +129,7 @@ public enum ExcelImportUtils {
                 Cell cell = cellIterator.next();
                 int columnIndex = cell.getColumnIndex();
                 Map<String, Object> header = headers.get(columnIndex);
-                Field field = (Field) header.get(FIELD);
+                Field field = (Field) header.get(ExcelTools.FIELD);
                 field.setAccessible(true);
                 Class<?> type = field.getType();
                 if (int.class.equals(type) || Integer.class.equals(type) ){
@@ -193,7 +190,7 @@ public enum ExcelImportUtils {
         while (cellIterator.hasNext()) {
             Cell cell = cellIterator.next();
             if (STRING.equals(cell.getCellType().name())
-                    && cell.getStringCellValue().equals(headers.get(cell.getColumnIndex()).get(FIELD_NAME))) {
+                    && cell.getStringCellValue().equals(headers.get(cell.getColumnIndex()).get(ExcelTools.FIELD_NAME))) {
                 return true;
             }
         }
