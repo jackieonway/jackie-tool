@@ -4,7 +4,6 @@
  */
 package com.github.jackieonway.util.export.excel;
 
-import com.github.jackieonway.util.export.ExcelTools;
 import org.apache.poi.ss.usermodel.Font;
 
 import java.lang.annotation.*;
@@ -60,7 +59,7 @@ public @interface ExcelField {
 
 
     /**
-     * excel format date
+     * excel format data
      * @return format
      */
     String format() default "";

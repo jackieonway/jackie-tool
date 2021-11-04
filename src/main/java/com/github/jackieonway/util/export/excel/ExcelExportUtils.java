@@ -6,7 +6,6 @@ package com.github.jackieonway.util.export.excel;
 
 import com.github.jackieonway.util.StringUtils;
 import com.github.jackieonway.util.collection.CollectionUtils;
-import com.github.jackieonway.util.export.ExcelTools;
 import com.github.jackieonway.util.export.ExportException;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
@@ -190,30 +189,35 @@ public enum ExcelExportUtils {
         if (Objects.isNull(dataValue)) {
             cell.setBlank();
         } else if (long.class.equals(type) || Long.class.equals(type)) {
+            formatData(workbook, value, cellStyle);
             cell.setCellValue(dataValue.toString());
         } else if (double.class.equals(type) || Double.class.equals(type)) {
+            formatData(workbook, value, cellStyle);
             cell.setCellValue(Double.parseDouble(dataValue.toString()));
         }  else if (int.class.equals(type) || Integer.class.equals(type)) {
             cell.setCellValue(dataValue.toString());
         } else if (float.class.equals(type) || Float.class.equals(type)) {
+            formatData(workbook, value, cellStyle);
             cell.setCellValue(Float.parseFloat(dataValue.toString()));
         } else if (boolean.class.equals(type) || Boolean.class.equals(type)) {
+            formatData(workbook, value, cellStyle);
             cell.setCellValue(Boolean.parseBoolean(dataValue.toString()));
         } else if (LocalDate.class.equals(type)) {
-            formatDate(workbook, value, cellStyle);
+            formatData(workbook, value, cellStyle);
             cell.setCellValue((LocalDate)dataValue);
         } else if (LocalDateTime.class.equals(type)) {
-            formatDate(workbook, value, cellStyle);
+            formatData(workbook, value, cellStyle);
             cell.setCellValue((LocalDateTime)dataValue);
         }else if (Date.class.equals(type)) {
-            formatDate(workbook, value, cellStyle);
+            formatData(workbook, value, cellStyle);
             cell.setCellValue((Date)dataValue);
         }else {
+            formatData(workbook, value, cellStyle);
             cell.setCellValue(dataValue.toString());
         }
     }
 
-    private static void formatDate(Workbook workbook, Map<String, Object> value, CellStyle cellStyle) {
+    private static void formatData(Workbook workbook, Map<String, Object> value, CellStyle cellStyle) {
         Object format = value.get("format");
         if (Objects.nonNull(format) && StringUtils.isNotBlank(format.toString())){
             cellStyle.setDataFormat(workbook.createDataFormat().getFormat(format.toString()));
