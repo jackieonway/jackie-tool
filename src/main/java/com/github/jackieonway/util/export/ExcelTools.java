@@ -27,6 +27,8 @@ public enum ExcelTools {
      */
     INSTANCE;
 
+    public static final String NULL_STRING = null;
+
     private static final Map<String, Map<String, Object>> CLASS_FILE_CACHE = new ConcurrentHashMap<>(512);
 
     private static final Map<String, Map<Integer, Map<String, Object>>> CLASS_FIELD_CACHE =
@@ -42,6 +44,7 @@ public enum ExcelTools {
     private static final String FIELD_NAME = "fieldName";
     private static final String WIDTH = "width";
     private static final String FIELD = "field";
+    private static final String FORMAT = "format";
 
     public static Map<String, Object> putClassFileAndGet(Class<?> clazz){
         Map<String, Object> excelFileMap = CLASS_FILE_CACHE.get(clazz.getName());
@@ -93,6 +96,7 @@ public enum ExcelTools {
                 map.put(FONT_NAME, excelField.fontName());
                 map.put(FONT_SIZE, excelField.fontSize());
                 map.put(FIELD,declaredField);
+                map.put(FORMAT,excelField.format());
                 headers.put(excelIndex.index(),map);
             }
         }

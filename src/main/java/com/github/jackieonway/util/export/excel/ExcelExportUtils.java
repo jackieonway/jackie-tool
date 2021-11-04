@@ -4,6 +4,7 @@
  */
 package com.github.jackieonway.util.export.excel;
 
+import com.github.jackieonway.util.StringUtils;
 import com.github.jackieonway.util.collection.CollectionUtils;
 import com.github.jackieonway.util.export.ExcelTools;
 import com.github.jackieonway.util.export.ExportException;
@@ -182,6 +183,9 @@ public enum ExcelExportUtils {
         } catch (IllegalAccessException e) {
             dataValue = "";
         }
+        final CellStyle cellStyle = getHeaderCellStyle(workbook);
+        cellStyle.setFont(createFont(workbook,value));
+        cell.setCellStyle(cellStyle);
         Class<?> type = field.getType();
         if (Objects.isNull(dataValue)) {
             cell.setBlank();
@@ -196,17 +200,24 @@ public enum ExcelExportUtils {
         } else if (boolean.class.equals(type) || Boolean.class.equals(type)) {
             cell.setCellValue(Boolean.parseBoolean(dataValue.toString()));
         } else if (LocalDate.class.equals(type)) {
+            formatDate(workbook, value, cellStyle);
             cell.setCellValue((LocalDate)dataValue);
         } else if (LocalDateTime.class.equals(type)) {
+            formatDate(workbook, value, cellStyle);
             cell.setCellValue((LocalDateTime)dataValue);
         }else if (Date.class.equals(type)) {
+            formatDate(workbook, value, cellStyle);
             cell.setCellValue((Date)dataValue);
         }else {
             cell.setCellValue(dataValue.toString());
         }
-        final CellStyle cellStyle = getHeaderCellStyle(workbook);
-        cellStyle.setFont(createFont(workbook,value));
-        cell.setCellStyle(cellStyle);
+    }
+
+    private static void formatDate(Workbook workbook, Map<String, Object> value, CellStyle cellStyle) {
+        Object format = value.get("format");
+        if (Objects.nonNull(format) && StringUtils.isNotBlank(format.toString())){
+            cellStyle.setDataFormat(workbook.createDataFormat().getFormat(format.toString()));
+        }
     }
 
     private static CellStyle getHeaderCellStyle(Workbook workbook){

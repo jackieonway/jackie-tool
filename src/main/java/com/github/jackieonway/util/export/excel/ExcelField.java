@@ -4,6 +4,7 @@
  */
 package com.github.jackieonway.util.export.excel;
 
+import com.github.jackieonway.util.export.ExcelTools;
 import org.apache.poi.ss.usermodel.Font;
 
 import java.lang.annotation.*;
@@ -56,4 +57,11 @@ public @interface ExcelField {
      * @return italic
      */
     boolean italic() default false;
+
+
+    /**
+     * excel format date
+     * @return format
+     */
+    String format() default "";
 }
