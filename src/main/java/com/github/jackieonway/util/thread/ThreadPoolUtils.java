@@ -49,14 +49,19 @@ public enum ThreadPoolUtils {
         AsyncTaskExecutor taskExecutor = ASYNC_TASK_EXECUTOR_MAP.get(threadName);
         if (Objects.isNull(taskExecutor)) {
             synchronized (INSTANCE) {
-                ThreadPoolTaskExecutor asyncTaskExecutor = new ThreadPoolTaskExecutor();
-                asyncTaskExecutor.setMaxPoolSize(MAX_POOL_SIZE);
-                asyncTaskExecutor.setCorePoolSize(CORE_POOL_SIZE);
-                asyncTaskExecutor.setThreadNamePrefix(String.format("%s-",threadName));
-                asyncTaskExecutor.setQueueCapacity(CORE_POOL_SIZE << 2);
-                asyncTaskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-                asyncTaskExecutor.initialize();
-                taskExecutor = asyncTaskExecutor;
+                taskExecutor = ASYNC_TASK_EXECUTOR_MAP.get(threadName);
+                if (Objects.isNull(taskExecutor)) {
+                    ThreadPoolTaskExecutor asyncTaskExecutor = new ThreadPoolTaskExecutor();
+                    asyncTaskExecutor.setMaxPoolSize(MAX_POOL_SIZE);
+                    asyncTaskExecutor.setCorePoolSize(CORE_POOL_SIZE);
+                    asyncTaskExecutor.setThreadNamePrefix(String.format("%s-",threadName));
+                    asyncTaskExecutor.setQueueCapacity(CORE_POOL_SIZE << 2);
+                    asyncTaskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+                    asyncTaskExecutor.initialize();
+                    ASYNC_TASK_EXECUTOR_MAP.put(threadName,asyncTaskExecutor);
+                    taskExecutor = asyncTaskExecutor;
+                }
+
             }
         }
         return taskExecutor;
@@ -154,11 +159,14 @@ public enum ThreadPoolUtils {
         ThreadPoolTaskScheduler poolTaskScheduler = THREAD_POOL_TASK_SCHEDULER_MAP.get(threadName);
         if (Objects.isNull(poolTaskScheduler)) {
             synchronized (INSTANCE) {
-                ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
-                threadPoolTaskScheduler.setThreadNamePrefix(String.format("%s-",threadName));
-                threadPoolTaskScheduler.initialize();
-                poolTaskScheduler = threadPoolTaskScheduler;
-                THREAD_POOL_TASK_SCHEDULER_MAP.put(threadName, threadPoolTaskScheduler);
+                poolTaskScheduler = THREAD_POOL_TASK_SCHEDULER_MAP.get(threadName);
+                if (Objects.isNull(poolTaskScheduler)) {
+                    ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+                    threadPoolTaskScheduler.setThreadNamePrefix(String.format("%s-", threadName));
+                    threadPoolTaskScheduler.initialize();
+                    poolTaskScheduler = threadPoolTaskScheduler;
+                    THREAD_POOL_TASK_SCHEDULER_MAP.put(threadName, threadPoolTaskScheduler);
+                }
             }
         }
         return poolTaskScheduler;
@@ -223,7 +231,7 @@ public enum ThreadPoolUtils {
     public static void shutdown(String scheduleThreadName){
         ScheduledFuture<?> scheduledFuture =
                 STRING_SCHEDULED_FUTURE_MAP.containsKey(scheduleThreadName) ?
-        STRING_SCHEDULED_FUTURE_MAP.remove(scheduleThreadName) : null;
+                        STRING_SCHEDULED_FUTURE_MAP.remove(scheduleThreadName) : null;
         if (Objects.nonNull(scheduledFuture)){
             scheduledFuture.cancel(Boolean.TRUE);
             ThreadPoolTaskScheduler threadPoolTaskScheduler =

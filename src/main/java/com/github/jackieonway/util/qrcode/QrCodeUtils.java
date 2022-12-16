@@ -351,27 +351,31 @@ public enum  QrCodeUtils {
         /**
          * encode barcode
          * @param contents barcode contents
-         * @param width barcode width
-         * @param height barcode height
          * @param bufferedImage not use param
          * @return bufferedImage
          * @author  Jackie
          * @since 1.0.2
          */
-        private static BufferedImage encode(String contents, int width, int height, BufferedImage bufferedImage) {
+        public static BufferedImage encode(String contents, BufferedImage bufferedImage) {
             if (!checkStandardUpceanChecksum(contents)) {
                 throw new IllegalArgumentException(CONTENTS_DO_NOT_PASS_CHECKSUM);
             }
+            int height = bufferedImage.getHeight();
+            int width = bufferedImage.getWidth();
             BufferedImage barcode = encode(contents,  width , height * 4 / 5);
             if (Objects.isNull(barcode)){
                 throw new NullPointerException("bar code is null");
             }
-            bufferedImage = new BufferedImage(width, height,
-                    BufferedImage.TYPE_INT_RGB);
             //start draw image
             Graphics2D g = bufferedImage.createGraphics();
             g.setBackground(Color.WHITE);
             g.clearRect(0,0,width,height);
+            StringBuilder stringBuilder = new StringBuilder();
+            char[] chars = contents.toCharArray();
+            for (char c : chars) {
+                stringBuilder.append(c).append(" ");
+            }
+            contents = stringBuilder.toString();
             g.setFont(new Font("微软雅黑", Font.PLAIN, height * 2 / 15));
             g.drawImage(barcode, 0, 0, barcode.getWidth(), barcode.getHeight(), null);
             int strWidth = g.getFontMetrics().stringWidth(contents);
